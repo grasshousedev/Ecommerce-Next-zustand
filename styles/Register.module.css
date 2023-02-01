@@ -1,0 +1,36 @@
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+
+.formContainer>span:nth-child(1){
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.formContainer>input{
+    width: 20%;
+    outline: none;
+    padding: 0.8rem;
+    border: 2px solid rgb(213, 213, 213);
+    border-radius: 0.4rem;
+}
+
+.formContainer>button{
+    padding: 0.9rem;
+    font-size: 1rem;
+    width: 20%;
+    border-radius: 0.5rem;
+    background: var(--themeRed);
+}
+
+.signUp{
+    color: var(--themeRed);
+}
+
+.signUp:hover{
+    cursor: pointer;
+}

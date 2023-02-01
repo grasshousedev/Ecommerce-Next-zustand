@@ -1,0 +1,115 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+    font-size: 0.812rem;
+    padding: 30px 70px;
+    color: #222;
+    margin-top: 2rem;
+}
+
+.darkMode{
+    background: black;
+}
+
+.col{
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    
+}
+
+.logo{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.logo>:nth-child(1){
+   width: 3rem;
+   height: 3rem;
+}
+
+.logo>:nth-child(2){
+    margin-top: 0.5rem;
+}
+
+.info{
+    display: flex;
+    gap: 0.3rem;
+}
+
+.follow{
+    margin-top: 1rem;
+}
+
+.contact{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.social{
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    color: var(--themeRed);
+}
+
+.social>*:hover{
+    cursor: pointer;
+    transform: scale(1.09);
+}
+
+.bold{
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+.marginBottom{
+    margin-bottom: 1rem;
+}
+
+.imageWrapper{
+    display: flex;
+    gap: 1rem;
+}
+
+.imageContainer{
+    width: 6rem;
+    height: 6rem;
+    margin-top: -1.5rem;
+}
+
+.payment{
+    margin-top: 1rem;
+    width: 3rem;
+    height: 3rem;
+}
+
+.container>:nth-child(2):hover, .container>:nth-child(3):hover{
+    cursor: pointer;
+}
+
+.payment:hover, .imageContainer, .logo{
+    cursor: pointer;
+}
+
+
+/* MOBILE RESPONSIVNESS */
+
+@media screen and (max-width: 480px){
+    .container{
+        flex-direction: column;
+        margin-left: -2rem;
+    }
+    .social{
+        gap: 1rem;
+    }
+    .social> *{
+        height: 2rem;
+        width: 2rem;
+    }
+
+}
+
+
+

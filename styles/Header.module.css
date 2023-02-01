@@ -1,0 +1,176 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    position: relative;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.logo>span{
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.menu{
+    flex: 1;
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    justify-content: center;
+    z-index: 99;
+}
+
+.menu>li:hover{
+    cursor: pointer;
+    color: var(--themeRed);
+}
+
+.rightSide{
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.login{
+    background-color: black;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+.signUp{
+    background-color: white;
+    color: black;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+.cart{
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    z-index: 99;
+    height: 2rem;
+    width: 2rem;
+}
+
+.badge{
+    position: absolute;
+    display: flex;
+    background-color: var(--themeRed);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: -0.5rem; 
+}
+
+.toggler{
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: rgb(243, 224, 224);
+}
+
+.toggler>*{
+    border-radius: 0.5rem;
+}
+
+.active{
+    background-color: var(--themeRed);
+}
+
+.user{
+    margin-top: 0.3rem;
+}
+.user:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* MOBILE RESPONSIVNESS */
+
+@media screen and (max-width: 480px){
+    .menu{
+        display: none;
+    }
+    .logoText{
+        display: none;
+    }
+    .authButton{
+        display: none;
+    }
+    .toggler{
+        display: none;
+    }
+    .hamburger{
+        height: 2rem;
+        width: 2rem;
+        margin-top: 0.1rem;
+    }
+
+    .hamburger:hover{
+        cursor: pointer;
+    }
+
+    .receipt{
+        height: 2rem;
+        width: 2rem; 
+    }
+
+    .receipt:hover{
+        cursor: pointer;
+    }
+    .mobileMenu{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        list-style: none;
+        padding: 1.5rem;
+        margin-top: 2.5rem;
+        background-color: rgb(243, 224, 224);
+        z-index: 2;
+    }
+
+    
+
+    .mobileMenu>:nth-child(1){
+        position: absolute;
+        margin-bottom: 2rem;
+        margin-left: 3.5rem;
+        margin-top: -1.2rem;
+        height: 2rem;
+        width: 2rem;
+    }
+
+    
+    .mobileMenu>:nth-child(1):hover{
+       cursor: pointer;
+    }
+
+
+    .mobileMenu>li:hover{
+        cursor: pointer;
+        color: var(--themeRed);
+    }
+
+  
+
+}
+
