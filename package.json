@@ -15,6 +15,7 @@
     "@sanity/client": "^3.3.6",
     "@sanity/image-url": "^1.0.1",
     "bcryptjs": "^2.4.3",
+    "firebase": "^9.16.0",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "next": "12.2.0",
