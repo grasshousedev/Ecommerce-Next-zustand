@@ -8,29 +8,50 @@ import {useRouter} from "next/router";
 import  {useStore}  from "../store/store";
 import Cookies from "js-cookie";
 import { client } from "../lib/client";
+import {useAuth} from "./Contexts/AuthContext"
 
 
 const Register = () => {
     const router = useRouter()
     const[formData, setFormData] = useState({})
     const[formErrors, setFormErrors]= useState({})
-    const[isSubmit, setIsSubmit]= useState(false)
+    const[loading, setLoading]=useState(false)    //For checking if the account  creation process is being executed or not
+    // const[isSubmit, setIsSubmit]= useState(false)
     
-    //Getting login info from the store 
-    const login= useStore((state) => state.login)
-    const userInfo= useStore((state) => state.userInfo)
+    // //Getting login info from the store 
+    // const login= useStore((state) => state.login)
+    // const userInfo= useStore((state) => state.userInfo)
 
-    useEffect(() =>{
-        if(userInfo){
-            router.push("/")
-        }
-    }, [router, userInfo])
+    // useEffect(() =>{
+    //     if(userInfo){
+    //         router.push("/")
+    //     }
+    // }, [router, userInfo])
 
     const handleInput = (e)=>{
             setFormData({...formData,
                 [e.target.name]: e.target.value
             })
            }
+    const{ signUp}= useAuth()
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault()
+        setFormErrors(validate(formData)) 
+        if(Object.keys(formErrors).length === 0){
+            try {
+                setLoading(true)
+                await signUp(formData.email, formData.password) 
+                router.push("/")
+            } catch{
+                setFormErrors({signUpStatus: "Failed to create an Account"})
+            }
+          setLoading(false)
+        }
+       
+     }
+
+
     //Form validation
     const validate = (formInput) =>{
         const errors= {}
@@ -65,30 +86,11 @@ const Register = () => {
   
 
 
-    const handleSubmit = async (e) =>{
-           e.preventDefault()
-           setFormErrors(validate(formData)) 
-           setIsSubmit(true)
-           if(Object.keys(formErrors).length === 0 && isSubmit){
-                // createUser({...formData})
-                const id= await createUser({...formData})
-                typeof window !== 'undefined' && localStorage.setItem('user', id)
-                toast.success("Account Created!")
-                // router.push(`/user/${id}`)
-                Cookies.set('userInfo', JSON.stringify(formData.email));
-                login(formData)
-                router.push("/")
-                
-                
-                // toast.error("Account exists, login instead!")
-            
-                
-            
-        }
+   
     
            
    
-    }
+    
 
     
     
@@ -101,32 +103,34 @@ const Register = () => {
     return (
         <Layout>
             <form action="" className={styles.formContainer}>
-            <span>Register</span>
-            <input type="text" name="name" placeholder="Full Name"  onChange={handleInput} required/>
-            <p style={{color: "red"}}>{formErrors.name}</p>
+                <span>Register</span>
+                <input type="text" name="name" placeholder="Full Name"  onChange={handleInput} required/>
+                <p style={{color: "red"}}>{formErrors.name}</p>
+              
+                <input type="email" name="email" placeholder="Email" onChange={handleInput} required />
+                <p style={{color: "red"}}>{formErrors.email}</p>
 
-            <input type="email" name="email" placeholder="Email" onChange={handleInput} required />
-            <p style={{color: "red"}}>{formErrors.email}</p>
+                <input type="password" name="password" placeholder="Password" onChange={handleInput} required />
+                <p style={{color: "red"}}>{formErrors.password}</p>
 
-            <input type="password" name="password" placeholder="Password" onChange={handleInput} required />
-            <p style={{color: "red"}}>{formErrors.password}</p>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleInput} required />
+                <p style={{color: "red"}}>{formErrors.confirmPassword}</p>
+                <p style={{color: "red"}}>{formErrors.signUpStatus}</p>
 
-            <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleInput} required />
-            <p style={{color: "red"}}>{formErrors.confirmPassword}</p>
-
-            <button type="submit" className="btn" onClick={handleSubmit}>Register</button>
-            <span>Already have an account? 
-                <Link href="/login">
-                    <span className={styles.signUp}> Login</span>
-                </Link>
+                <button type="submit" disabled={loading} className="btn" onClick={handleSubmit}>Register</button>
+                <span>Already have an account? 
+                    <Link href="/login">
+                        <span className={styles.signUp}> Login</span>
+                    </Link>
                 
-            </span>
-        </form>
-        <Toaster/>
+                </span>
+            </form>
+            <Toaster/>
         
 
         </Layout>
-     );
+     )
     }
+    
  
 export default Register;
