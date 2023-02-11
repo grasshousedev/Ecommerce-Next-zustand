@@ -82,29 +82,12 @@ const Register = () => {
         }
         return errors
     }
-
-  
-
-
-   
     
-           
-   
-    
-
-    
-    
-
-         
-    
-
-   
-
     return (
         <Layout>
             <form action="" className={styles.formContainer}>
                 <span>Register</span>
-                <input type="text" name="name" placeholder="Full Name"  onChange={handleInput} required/>
+                <input type="text" name="name" placeholder="User name"  onChange={handleInput} required/>
                 <p style={{color: "red"}}>{formErrors.name}</p>
               
                 <input type="email" name="email" placeholder="Email" onChange={handleInput} required />

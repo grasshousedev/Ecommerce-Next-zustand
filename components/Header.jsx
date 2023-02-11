@@ -7,6 +7,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 import UserMenu from "./UserMenu"
+import {useAuth} from "../pages/Contexts/AuthContext"
 
 const Header = () => {
     let mobile;
@@ -17,6 +18,9 @@ const Header = () => {
     useEffect(() =>{
         setOrder(localStorage.getItem("order"))
     }, [])
+
+    //Getting the current user status from AuthContexts (Firebase)
+    const {currentUser}= useAuth()
     
     //Function to open and close the navigation menu on mobile
     const[mobileMenu, setMobileMenu] = useState(false)
@@ -80,8 +84,8 @@ const Header = () => {
                     <UilMoon  className={ darkMode &&  `${styles.active}`} onClick={handlerDarkMode}/>
                 </div>
                 
-                {userInfo 
-                    ? <p className={styles.user} onClick={handleUserMenu} >{userInfo}</p>
+                {currentUser
+                    ? <p className={styles.user} onClick={handleUserMenu} >{currentUser.email}</p>
                     : (
                         
                         <div className={styles.authButton}> 
