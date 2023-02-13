@@ -1,7 +1,7 @@
 .container{
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
     margin: 2rem auto;
     width: 40%;
 }

@@ -16,17 +16,6 @@ const Register = () => {
     const[formData, setFormData] = useState({})
     const[formErrors, setFormErrors]= useState({})
     const[loading, setLoading]=useState(false)    //For checking if the account  creation process is being executed or not
-    // const[isSubmit, setIsSubmit]= useState(false)
-    
-    // //Getting login info from the store 
-    // const login= useStore((state) => state.login)
-    // const userInfo= useStore((state) => state.userInfo)
-
-    // useEffect(() =>{
-    //     if(userInfo){
-    //         router.push("/")
-    //     }
-    // }, [router, userInfo])
 
     const handleInput = (e)=>{
             setFormData({...formData,
