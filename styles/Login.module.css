@@ -34,3 +34,23 @@
 .signUp:hover{
     cursor: pointer;
 }
+
+.forgotPassword{
+    color: var(--themeRed);
+}
+
+.forgotPassword:hover{
+    cursor: pointer;
+}
+
+.formContainer> span:last-child{
+    margin-top: -1rem;
+}
+.formContainer> span:last-child::before {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: rgb(213, 213, 213);
+    margin: 1rem 0;
+  }

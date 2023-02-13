@@ -85,6 +85,10 @@ const Login = () => {
             <p style={{color: "red"}}>{formErrors.loginStatus}</p>
 
             <button type="submit"  disabled={loading}  className="btn" onClick={handleSubmit}>Login</button>
+            <Link href="/forgot-password">
+                <span className={styles.forgotPassword}>Forgot Password?</span>
+            </Link>
+            
             <span>Do not have an account? 
                 <Link href="/register">
                     <span className={styles.signUp}> Register</span>
