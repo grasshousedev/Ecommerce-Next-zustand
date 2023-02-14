@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import {useRouter} from "next/router";
 import Layout from "../components/Layout"
 import styles from "../styles/Login.module.css"
@@ -65,7 +65,7 @@ const Login = () => {
                 setFormErrors({loginStatus: "Invalid email or password, please try again!"})
             }
             setLoading(false)
-            }  
+        }  
    
     }
 
