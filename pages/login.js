@@ -13,20 +13,7 @@ const Login = () => {
     const router = useRouter()
     const[formData, setFormData] = useState({})
     const[formErrors, setFormErrors]= useState({})
-    const[loading, setLoading]=useState(false)    //For checking if the login  process is being executed or not
-    // const[isSubmit, setIsSubmit]= useState(false)
-
-     //Getting login info from the store 
-    //  const login= useStore((state) => state.login)
-    //  const userInfo= useStore((state) => state.userInfo)
-
-    // useEffect(() =>{
-    //     if(userInfo){
-    //         router.push("/")
-    //     }
-    // }, [router, userInfo])
-
-    
+    const[loading, setLoading]=useState(false)    
 
      //Form validation
      const validate = (formInput) =>{
@@ -57,11 +44,22 @@ const Login = () => {
     const handleSubmit =async (e) =>{
            e.preventDefault() 
            setFormErrors(validate(formData)) 
+    
            if(Object.keys(formErrors).length === 0){
+
             try {
                 setLoading(true)
                 await login(formData.email, formData.password) 
-                router.push("/")
+                 const privateRoute = sessionStorage.getItem('privateRoute')  // Get the stored private route from the session storage
+                
+                if (privateRoute) {
+                    router.push(privateRoute)
+                    sessionStorage.removeItem('privateRoute')
+                  } else {
+                   
+                    router.push('/')
+                  }
+               
 
             } catch{
                 setFormErrors({loginStatus: "Invalid email or password, please try again!"})

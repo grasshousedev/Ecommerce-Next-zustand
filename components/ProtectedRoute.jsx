@@ -6,6 +6,8 @@ const ProtectedRoute = ({children}) => {
     const{currentUser} = useAuth()
 
     if(!currentUser){
+        //storing the route the user was trying to access in the session storage then redirect him to the login page
+        sessionStorage.setItem('privateRoute', router.asPath);
         router.push('/login')
         return null
     }
