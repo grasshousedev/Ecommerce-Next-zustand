@@ -8,7 +8,7 @@ import {useRouter} from "next/router";
 import  {useStore}  from "../store/store";
 import Cookies from "js-cookie";
 import { client } from "../lib/client";
-import {useAuth} from "./Contexts/AuthContext"
+import {useAuth} from "./Contexts/AuthContext";
 
 
 const Register = () => {
@@ -22,11 +22,13 @@ const Register = () => {
                 [e.target.name]: e.target.value
             })
            }
+
     const{ signUp}= useAuth()
 
     const handleSubmit = async (e) =>{
         e.preventDefault()
         setFormErrors(validate(formData)) 
+
         if(Object.keys(formErrors).length === 0){
             try {
                 setLoading(true)
@@ -35,6 +37,7 @@ const Register = () => {
             } catch{
                 setFormErrors({signUpStatus: "Failed to create an Account"})
             }
+            
           setLoading(false)
         }
        
@@ -69,6 +72,7 @@ const Register = () => {
         } else if(formInput.password !== formInput.confirmPassword){
             errors.confirmPassword= "Passwords do not macth!"
         }
+
         return errors
     }
     
@@ -90,6 +94,7 @@ const Register = () => {
                 <p style={{color: "red"}}>{formErrors.signUpStatus}</p>
 
                 <button type="submit" disabled={loading} className="btn" onClick={handleSubmit}>Register</button>
+                
                 <span>Already have an account? 
                     <Link href="/login">
                         <span className={styles.signUp}> Login</span>
