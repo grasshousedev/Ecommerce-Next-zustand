@@ -6,6 +6,7 @@ import {urlFor} from "../lib/client"
 import toast, {Toaster} from "react-hot-toast";
 import { useState } from "react";
 import OrderModal from "../components/OrderModal";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 
 const Cart = () => {
@@ -29,44 +30,45 @@ const Cart = () => {
 
     return ( 
         <Layout>
-            <div className={styles.container}>
+            <ProtectedRoute>
+                <div className={styles.container}>
 
-                {/* DETAILS */}
-                <div className={styles.details}>
-                    <table className={styles.table}>
-                        <thead>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th></th>
-                        </thead>
+                    {/* DETAILS */}
+                    <div className={styles.details}>
+                        <table className={styles.table}>
+                            <thead>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </thead>
 
-                        <tbody className={styles.tbody}>
-                            {cartData.dishes.length > 0 && 
-                                cartData.dishes.map((dish, index) =>{
+                            <tbody className={styles.tbody}>
+                                {cartData.dishes.length > 0 && 
+                                    cartData.dishes.map((dish, index) =>{
 
-                                const src = urlFor(dish.image).url()
-                                return(
-                                    <tr key={index} className={styles.tr}>
-                                        <td  className={styles.imageTd} data-label="Image">
-                                            <Image
-                                            loader={() => src}
-                                            src={src}
-                                            alt=""
-                                            objectFit="cover"
-                                            width={85}
-                                            height={85}
-                                            />
-                                        </td>
+                                    const src = urlFor(dish.image).url()
+                                    return(
+                                        <tr key={index} className={styles.tr}>
+                                            <td  className={styles.imageTd} data-label="Image">
+                                                <Image
+                                                loader={() => src}
+                                                src={src}
+                                                alt=""
+                                                objectFit="cover"
+                                                width={85}
+                                                height={85}
+                                                />
+                                            </td>
 
-                                        <td data-label="Name">
+                                            <td data-label="Name">
                                             {dish.name}
-                                        </td>
+                                            </td>
 
-                                        <td data-label="Size">
+                                            <td data-label="Size">
                                             {
                                                 dish.size === 0 
                                                 ? "Small"
@@ -74,71 +76,71 @@ const Cart = () => {
                                                 ? "Medium"
                                                 : "Large"
                                             }
-                                        </td>
+                                            </td>
 
-                                        <td data-label="Price">
+                                            <td data-label="Price">
                                             {dish.price}
-                                        </td>
+                                            </td>
 
-                                        <td data-label="Quantity">
+                                            <td data-label="Quantity">
                                             {dish.quantity}
-                                        </td>
+                                            </td>
 
-                                        <td data-label="Total">
+                                            <td data-label="Total">
                                             {dish.price * dish.quantity}
-                                        </td>
+                                            </td>
 
-                                        <td
+                                            <td
                                             onClick={() =>handleRemove(index)}
                                             style={{
                                                 color: "var(--themeRed)",
                                                 cursor: "pointer"
                                             }}
                                             className={styles.cross}
-                                        >x</td>
+                                            >x</td>
 
-                                    </tr>
-                                )
-                               
-                             })
-                            }
+                                        </tr>
+                                    )
+                            
+                                })
+                                }
 
-                        </tbody>
-                    </table>
-                </div>
+                            </tbody>
+                        </table>
+                    </div>
 
-            {/* SUMMARY */}
-                <div className={styles.cart}>
-                    <span>Cart</span>
+                    {/* SUMMARY */}
+                    <div className={styles.cart}>
+                        <span>Cart</span>
                     
-                    <div className={styles.cartDetails}>
-                       
-                        <div>
-                            <span>Items </span>
-                            <span>{cartData.dishes.length}</span>
-                        </div>
+                        <div className={styles.cartDetails}>
+                    
+                            <div>
+                                <span>Items </span>
+                                <span>{cartData.dishes.length}</span>
+                            </div>
 
-                        <div>
-                            <span>Total </span>
-                            <span>${total()}</span>
-                        </div>
+                            <div>
+                                <span>Total </span>
+                                <span>${total()}</span>
+                            </div>
 
-                        <div className={styles.buttons}>
-                            <button className="btn" onClick={handleOnDelivery}>Pay On Delivery</button>
-                            <button className="btn">Pay Now</button>
+                            <div className={styles.buttons}>
+                                <button className="btn" onClick={handleOnDelivery}>Pay On Delivery</button>
+                                <button className="btn">Pay Now</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <Toaster/>
-        {/* MODAL */}
-        <OrderModal
-        opened= {paymentMethod === 0}
-        setOpened= {setPaymentMethod}
-        paymentMethod={paymentMethod}
-        />
-        
+                <Toaster/>
+                {/* MODAL */}
+                <OrderModal
+                opened= {paymentMethod === 0}
+                setOpened= {setPaymentMethod}
+                paymentMethod={paymentMethod}
+                />
 
+            </ProtectedRoute>
         </Layout>
      );
 }
