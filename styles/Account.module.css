@@ -16,13 +16,9 @@
     border-radius: 1rem;
 }
 
-
-.container> form> input{
-    width: 70%;
-    outline: none;
-    padding: 0.8rem;
-    border: 2px solid rgb(213, 213, 213);
-    border-radius: 0.4rem;
+.container> form>  .formHeader{
+    display: flex;
+    justify-content: space-between;
 }
 
 .container> form> label{
@@ -34,4 +30,65 @@
     font-weight: bold;
     font-size: 1rem;
     margin-bottom: 0.5rem;
+}
+.container> form> input, .container> form> div> input {
+    width: 70%;
+    outline: none;
+    padding: 0.8rem;
+    border: 2px solid rgb(213, 213, 213);
+    border-radius: 0.4rem;
+}
+
+
+.container> form> .formHeader> .button{
+    border-radius: 2rem;
+    background-color: rgba(0, 0, 0, 0.1) ;
+    color: black;
+    margin-right: 1rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    border: 0;
+    outline: none;
+}
+
+.container> form > .detailButtons{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.container> form > .detailButtons> button:nth-child(1){
+    background: var(--themeRed);
+    color: white;
+}
+
+.container> form > .detailButtons> button:nth-child(2){
+    border: 1px solid var(--themeRed);
+    background-color: transparent;
+}
+
+.container> form> .detailButtons >  .button{
+    border-radius: 2rem;
+    background-color: rgba(0, 0, 0, 0.1) ;
+    color: black;
+    margin-right: 1rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    border: 0;
+    outline: none;
+}
+
+
+.button:hover{
+    cursor: pointer;
+}
+
+.container> .security > .passwordChange{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.container> .security > .passwordChange > label{
+    font-size: 0.9rem; 
+    color: rgb(61, 58, 58);
+    display: block;
 }
