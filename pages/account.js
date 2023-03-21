@@ -2,16 +2,28 @@ import Layout from "../components/Layout";
 import styles from "../styles/Account.module.css"
 import ProtectedRoute from "../components/ProtectedRoute";
 import { useAuth } from "./Contexts/AuthContext";
+import {auth} from "../lib/firebase"
+import { getAuth, deleteUser } from "firebase/auth";
+import {db} from "../lib/firebase"
+import { doc, deleteDoc, setDoc, getDoc } from "firebase/firestore";
 import { useState } from "react";
+import toast, {Toaster} from "react-hot-toast";
+import {useRouter} from "next/router";
+import { useEffect } from "react";
+
+
+
 
 const Account= ()=>{
-
+ 
+    const router = useRouter()
     const {currentUser, updateEmail, updatePassword} = useAuth()
     const [formData, setFormdata] = useState({})
-    const [errors, setFormErrors] = useState({})
+    const [formErrors, setFormErrors] = useState({})
     const [disabled, setDisabled] = useState(true)
+    const [emailDisabled, setEmailDisabled] = useState(true)
     const [passwordChange, setPasswordChange] = useState(true)
-
+    const [ emailChange, setEmailChange] = useState(false)
 
     const handleInput= (e) => {
         setFormdata({
@@ -20,9 +32,51 @@ const Account= ()=>{
         })
     }
 
+    const handleEmailUpdate= async(e) => {
+
+        e.preventDefault()
+        const regex= /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
+
+        if(formData.email !== currentUser.email && regex.test(formData.email)){
+            try{
+                await updateEmail(formData.email)
+                toast.success("Email updated succesfully")
+                setEmailDisabled(true)
+                setEmailChange(false)
+
+            } catch{
+                toast.error("Failed to update the email")
+            }
+
+        } else if(formData.email == currentUser.email){
+            toast.error("Make sure emails are not the same")
+
+        } else if( !regex.test(formData.email)){
+            toast.error("Not a valide email format")
+        }
+    }
+   
+    
+    const handlePasswordUpdate= async(e) => {
+
+        e.preventDefault()
+        if(formData.newPassword == formData.confirmNewPassword){
+            try{
+                await updatePassword(formData.newPassword)
+                toast.success("Password upadated succesfully!")
+
+            } catch(error){
+                console.log(error)
+                toast.error("Failed to update password")
+            }
+
+        }
+    }
+
     const unable = (e) => {
         e.preventDefault()
         setDisabled(false)
+        
     }
 
     const disable = (e) => {
@@ -40,25 +94,88 @@ const Account= ()=>{
         setPasswordChange(true)
     }
 
-     //Form validation
-     const validate = (formInput) =>{
-        const errors= {}
-        const regex= /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-
-        if(!formInput.email){
-            errors.email= "Email is required!"
-        } else if( !regex.test(formInput.email)){
-            errors.email= "This is not a valide email format!"
-        }
-
-        if(!formInput.password){
-            errors.password= "Password is required!"
-        }
-        return errors
+    const unableEmailChange = (e) =>{
+        e.preventDefault
+        setEmailChange(true)
+        setEmailDisabled(false)
     }
-    
+
+    const disableEmailChange = (e) =>{
+        e.preventDefault()
+        setEmailChange(false)
+        setEmailDisabled(true)
+    }
+
+    const handleDetailsUpdate = async(e)=>{
+        e.preventDefault()
+
+        try {
+            const userDocRef = doc(db, "users", currentUser.uid)
+            await setDoc(userDocRef, {
+                username: formData.userName,
+                fullName: formData.fullName,
+                phoneNumber: formData.phoneNumber,
+                address: formData.address,
+            });
+
+            toast.success("Account details updated succesfully")
+            } catch (error) {
+
+            console.error(error);
+            toast.error("Failed to update account details")
+            }
+
+    }
+
+    const handleAccountDeletion = async() =>{
+        try {
+            const auth = getAuth();
+            const user = auth.currentUser;
+            await deleteUser(user)
+            toast.success("Account deleted successfully!")
+            router.push('/')
+
+        }  catch (error) {
+            toast.error("Failed to delete account")
+
+        }
+        try {
+            const userDocRef = doc(db, "users", currentUser.uid)
+            await deleteDoc(userDocRef)
+            
+        } catch(error){
+            toast.error("Failed to delete account ")
+
+        }
+           
+        } 
+
+    const[userData, setUserData] = useState({})
+
+    const fetchUserData = async() =>{
+        try {
+            const docRef = doc(db, "users", currentUser.uid)
+            const docSnap = await getDoc(docRef)
+
+            if(docSnap.exists()){
+
+                setUserData(docSnap.data())  
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(()=> {
+        if(currentUser){
+            fetchUserData()
+        }
+       
+    }, [currentUser])
 
     return(
+    currentUser &&
     <Layout>
         <ProtectedRoute>
             <div className={styles.container}>
@@ -69,18 +186,38 @@ const Account= ()=>{
                     </div>
                     
                     <label>Username</label>
-                    <input type="text" name="userName" onChange={handleInput} disabled={disabled}/>
+                    <input type="text" name="userName" onChange={handleInput} disabled={disabled} defaultValue={userData.userName}/>
+
                     <label>Full Name</label>
-                    <input type="text" name="fullName" onChange={handleInput} disabled={disabled} />
-                    <label>Email</label>
-                    <input type="text" name="email"  onChange={handleInput}  defaultValue={currentUser.email} disabled={disabled}/>
+                    <input type="text" name="fullName" onChange={handleInput} disabled={disabled} defaultValue={userData.fullName} />
+
                     <label>Phone number</label>
-                    <input type="tel" name="PhoneNumber" onChange={handleInput} disabled={disabled}/>
+                    <input type="tel" name="phoneNumber" onChange={handleInput} disabled={disabled} defaultValue={userData.phoneNumber}/>
+                    
+
                     <label>Address</label>
-                    <input type="text" name="address" onChange={handleInput} disabled={disabled}/>
+                    <input type="text" name="address" onChange={handleInput} disabled={disabled} defaultValue={userData.address}/>
+    
+                    {disabled &&
+                    <div className={styles.emailContainer}>
+                        <label>Email</label>
+                        <div className={styles.email}>
+                            <input type="text" name="email"  onChange={handleInput}  defaultValue={currentUser.email} disabled={emailDisabled}/>
+                            <span onClick={unableEmailChange}>Change Email</span>
+                        </div>
+
+                        { emailChange &&
+                        <div className={styles.detailButtons}>
+                            <button className={styles.button} onClick={handleEmailUpdate} >Update Email</button>
+                            <button className={styles.button} onClick={disableEmailChange} >Cancel</button>
+                        </div>}
+                        
+                    </div>
+                   }
+
                     { disabled ||
                         <div className={styles.detailButtons}>
-                            <button className={styles.button}>Update Details</button>
+                            <button className={styles.button} onClick={handleDetailsUpdate}>Update Details</button>
                             <button className={styles.button} onClick={disable}>Cancel</button>
                         </div>}
                 
@@ -93,29 +230,38 @@ const Account= ()=>{
                     </div>
                  
                     <label>Current Password</label>
-                    <input type="password" name="password" onChange={handleInput} placeholder="Leave blank to keep the same" defaultValue="test" disabled={passwordChange}/>
+                    <input type="password" name="password" onChange={handleInput}  defaultValue="test1234" disabled={passwordChange}/>
                     { passwordChange ||
                         <>
                             <div className={styles.passwordChange}>
                                 <label>New Password</label>
-                                <input type="text" name="newPassword"  />
-
+                                <input type="password" name="newPassword" onChange={handleInput}/>
+        
                                 <label>Confirm New Password</label>
-                                <input type="text" name="confirmNewPassword" />
+                                <input type="password" name="confirmNewPassword" onChange={handleInput} />
+
                             </div>
                             <div className={styles.detailButtons}>
-                                <button className={styles.button}>Update Password</button>
+                                <button className={styles.button} onClick={handlePasswordUpdate}>Update Password</button>
                                 <button className={styles.button} onClick={disablePasswordChange}>Cancel</button>
                             </div>
                         </>
                         }
                 </form>
+                <div className={styles.accountDeletion}>
+                    <div className={styles.formHeader}>
+                            <span className={styles.formTitle}>Account Deletion</span>
+                            <button className={styles.button} onClick={handleAccountDeletion}>Delete account</button>
+                    </div>
+                    
+                </div>
             </div>
+            <Toaster/>
         </ProtectedRoute>
         
        
     </Layout>
-    )
+    ) 
 }
 
 export default Account;

@@ -179,8 +179,20 @@
     background-color: white;
     box-shadow: var(--shadow);
     color: black;
-    margin-top: -1rem;
+    margin: -1rem 1rem;
    
+}
+
+
+.contactUs>div{
+    background-color: rgb(37,211,102);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
 
 

@@ -9,6 +9,10 @@ import  {useStore}  from "../store/store";
 import Cookies from "js-cookie";
 import { client } from "../lib/client";
 import {useAuth} from "./Contexts/AuthContext";
+import {auth} from "../lib/firebase"
+import {db} from "../lib/firebase"
+import { doc, setDoc } from "firebase/firestore";
+
 
 
 const Register = () => {
@@ -16,6 +20,7 @@ const Register = () => {
     const[formData, setFormData] = useState({})
     const[formErrors, setFormErrors]= useState({})
     const[loading, setLoading]=useState(false)    //For checking if the account  creation process is being executed or not
+    const{currentUser, signUp} = useAuth()
 
     const handleInput = (e)=>{
             setFormData({...formData,
@@ -23,7 +28,7 @@ const Register = () => {
             })
            }
 
-    const{ signUp}= useAuth()
+
 
     const handleSubmit = async (e) =>{
         e.preventDefault()
@@ -32,11 +37,61 @@ const Register = () => {
         if(Object.keys(formErrors).length === 0){
             try {
                 setLoading(true)
-                await signUp(formData.email, formData.password) 
+                await signUp(formData.email, formData.password)
+
+                await new Promise(async (resolve) => {
+                    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+                      if (user) {
+                        currentUser = user
+                        unsubscribe()
+                        resolve()
+                      }
+                    })
+                  })
+                
+                toast.success("Account created successfuly!")
                 router.push("/")
-            } catch{
+
+            } catch(error){
+                console.error(error)
                 setFormErrors({signUpStatus: "Failed to create an Account"})
             }
+
+        
+            // Listen for user creation
+            auth.onAuthStateChanged(async (currentUser) => {
+            if (currentUser) {
+                try {
+                const userDocRef = doc(db, "users", currentUser.uid)
+                await setDoc(userDocRef, {
+                    userName: formData.userName,
+                    fullName: "",
+                    phoneNumber: "",
+                    address: "",
+                });
+                } catch (error) {
+                console.error(error);
+                setFormErrors({ signUpStatus: "Failed to create an account" })
+                }
+            }
+            });
+
+            // Listen for user deletion
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                   // User signed out or deleted
+                   try {
+                    const userDocRef = doc(db, "users", user.uid)
+                    await userDocRef.delete();
+                    console.log("User document deleted successfully.");
+                  } catch (error) {
+                    console.error("Error deleting user document: ", error);
+                  }
+                } 
+                 
+                
+              });
+
             
           setLoading(false)
         }
@@ -49,8 +104,8 @@ const Register = () => {
         const errors= {}
         const regex= /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
-        if(!formInput.name){
-            errors.name= "Name is required!"
+        if(!formInput.userName){
+            errors.userName= "Username is required!"
         }
         if(!formInput.email){
             errors.email= "Email is required!"
@@ -64,7 +119,7 @@ const Register = () => {
             errors.password = "Password should be more than 4 characters"
         
         } else if(formInput.password.length > 15){
-            errors = "Passwords cannot exceed 15 characters"
+            errors.password = "Passwords cannot exceed 15 characters"
         }
 
         if(!formInput.confirmPassword){
@@ -80,9 +135,10 @@ const Register = () => {
         <Layout>
             <form action="" className={styles.formContainer}>
                 <span>Register</span>
-                <input type="text" name="name" placeholder="User name"  onChange={handleInput} required/>
-                <p style={{color: "red"}}>{formErrors.name}</p>
-              
+                
+                <input type="text" name="userName" placeholder="Username" onChange={handleInput} required />
+                <p style={{color: "red"}}>{formErrors.userName}</p>
+                
                 <input type="email" name="email" placeholder="Email" onChange={handleInput} required />
                 <p style={{color: "red"}}>{formErrors.email}</p>
 

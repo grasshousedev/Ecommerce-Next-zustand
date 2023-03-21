@@ -8,14 +8,20 @@ import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 import UserMenu from "./UserMenu"
 import {useAuth} from "../pages/Contexts/AuthContext"
+import { doc, getDoc } from "firebase/firestore"
+import {db} from "../lib/firebase"
 
 const Header = () => {
+
     let mobile;
+
     if(typeof window !== 'undefined'){
          mobile=  window.innerWidth <= 740 ? true : false
     }
+
     const [order, setOrder] = useState("")
     useEffect(() =>{
+        
         setOrder(localStorage.getItem("order"))
     }, [])
 
@@ -46,7 +52,31 @@ const Header = () => {
     const handleUserMenu= () =>{
         setUserMenu((prevState) => !prevState)
     }
-    
+
+    const[userName, setUserName] = useState("")
+
+    const fetchUserName = async() =>{
+        try {
+            const docRef = doc(db, "users", currentUser.uid)
+            const docSnap = await getDoc(docRef)
+
+            if(docSnap.exists()){
+
+                setUserName(docSnap.data().userName)  
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(()=> {
+        if(currentUser){
+            fetchUserName()
+        }
+       
+    }, [currentUser])
+   
 
     return ( 
         <div className={styles.header}>
@@ -85,7 +115,7 @@ const Header = () => {
                 </div>
                 
                 {currentUser
-                    ? <p className={styles.user} onClick={handleUserMenu} >{currentUser.email}</p>
+                    ? <p className={styles.user} onClick={handleUserMenu} >{userName}</p>
                     : (
                         
                         <div className={styles.authButton}> 

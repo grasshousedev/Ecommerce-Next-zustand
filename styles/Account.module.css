@@ -21,17 +21,32 @@
     justify-content: space-between;
 }
 
-.container> form> label{
+.container> form> label, .container> form> .emailContainer> label {
     font-size: 0.9rem; 
     color: rgb(61, 58, 58)
 }
+
+
 
 .container> form> .formTitle{
     font-weight: bold;
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
-.container> form> input, .container> form> div> input {
+
+.container> form> .emailContainer> .email{
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem; 
+}
+
+.container> form> .emailContainer> .email>:nth-child(2){
+    margin-top: 0.5rem;
+    text-decoration: underline;
+    color:  rgb(22,193,173);
+    cursor: pointer;
+}
+.container> form> input, .container> form> div> input,  .container> form> .emailContainer> .email>  input {
     width: 70%;
     outline: none;
     padding: 0.8rem;
@@ -50,23 +65,23 @@
     outline: none;
 }
 
-.container> form > .detailButtons{
+.container> form > .detailButtons, .container> form > .emailContainer> .detailButtons {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
 }
 
-.container> form > .detailButtons> button:nth-child(1){
+.container> form > .detailButtons> button:nth-child(1), .container> form > .emailContainer> .detailButtons> button:nth-child(1) {
     background: var(--themeRed);
     color: white;
 }
 
-.container> form > .detailButtons> button:nth-child(2){
+.container> form > .detailButtons> button:nth-child(2), .container> form > .emailContainer>  .detailButtons> button:nth-child(2) {
     border: 1px solid var(--themeRed);
     background-color: transparent;
 }
 
-.container> form> .detailButtons >  .button{
+.container> form> .detailButtons >  .button, .container> form> .emailContainer> .detailButtons >  .button {
     border-radius: 2rem;
     background-color: rgba(0, 0, 0, 0.1) ;
     color: black;
@@ -92,3 +107,45 @@
     color: rgb(61, 58, 58);
     display: block;
 }
+
+
+.container> .accountDeletion{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: rgb(247, 247, 247);
+    padding: 1rem 0 2rem 3rem;
+    border-radius: 1rem
+}
+
+.container> .accountDeletion>  .formHeader{
+    display: flex;
+    justify-content: space-between;
+}
+
+.container> .accountDeletion> label{
+    font-size: 0.9rem; 
+    color: rgb(61, 58, 58)
+}
+
+.container> .accountDeletion> .formTitle{
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.container> .accountDeletion> .formHeader> .button{
+    border-radius: 2rem;
+    background-color: rgba(0, 0, 0, 0.1) ;
+    color: black;
+    margin-right: 1rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    border: 0;
+    outline: none;
+}
+
+
+
+
+
+
