@@ -16,6 +16,7 @@ import 'react-phone-number-input/style.css';
 
 
 
+
 const Account= ()=>{
  
     const router = useRouter()
@@ -26,6 +27,7 @@ const Account= ()=>{
     const [emailDisabled, setEmailDisabled] = useState(true)
     const [passwordChange, setPasswordChange] = useState(true)
     const [ emailChange, setEmailChange] = useState(false)
+    const [accountDeletion, setAccountDeletion] = useState(false)
 
     const [phoneNumber, setPhoneNumber] = useState();
     
@@ -108,6 +110,10 @@ const Account= ()=>{
         e.preventDefault()
         setEmailChange(false)
         setEmailDisabled(true)
+    }
+
+    const unableAccountDeletion = () =>{
+        setAccountDeletion(true)
     }
 
     const handleDetailsUpdate = async(e)=>{
@@ -272,11 +278,19 @@ const Account= ()=>{
                 <div className={styles.accountDeletion}>
                     <div className={styles.formHeader}>
                             <span className={styles.formTitle}>Account Deletion</span>
-                            <button className={styles.button} onClick={handleAccountDeletion}>Delete account</button>
+                            <button className={styles.button} onClick={() => setAccountDeletion(true)}>Delete account</button>
                     </div>
+
+                    { accountDeletion &&
+                        <div className={styles.confirmation}>
+                                <button className={styles.button} onClick={handleAccountDeletion} >Delete Account</button>
+                                <button className={styles.button} onClick={() => setAccountDeletion(false)}>Cancel</button>
+                        </div>
+                    }
                     
                 </div>
             </div>
+        
             <Toaster/>
         </ProtectedRoute>
         

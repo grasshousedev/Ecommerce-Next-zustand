@@ -159,6 +159,33 @@
     outline: none;
 }
 
+.container> .accountDeletion > .confirmation{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.container> .accountDeletion > .confirmation> :nth-child(1){
+    border-radius: 2rem;
+    background-color: var(--themeRed);
+    color: white;
+    margin-right: 1rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    border: 0;
+    outline: none;
+}
+
+.container> .accountDeletion > .confirmation> :nth-child(2){
+    border-radius: 2rem;
+    border: 1px solid var(--themeRed);
+    background-color: transparent;
+    color: black;
+    margin-right: 1rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.8rem;
+    outline: none;
+   
+}
+
 
 
 
