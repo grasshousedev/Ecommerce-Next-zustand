@@ -10,6 +10,8 @@ import { useState } from "react";
 import toast, {Toaster} from "react-hot-toast";
 import {useRouter} from "next/router";
 import { useEffect } from "react";
+import PhoneInput, {formatPhoneNumber, formatPhoneNumberIntl, isValidPhoneNumber, isPossiblePhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 
 
@@ -25,6 +27,8 @@ const Account= ()=>{
     const [passwordChange, setPasswordChange] = useState(true)
     const [ emailChange, setEmailChange] = useState(false)
 
+    const [phoneNumber, setPhoneNumber] = useState();
+    
     const handleInput= (e) => {
         setFormdata({
             ...formData, 
@@ -108,22 +112,28 @@ const Account= ()=>{
 
     const handleDetailsUpdate = async(e)=>{
         e.preventDefault()
+        if(!isPossiblePhoneNumber(phoneNumber)){
+            toast.error("Not a valid phone number")
 
-        try {
-            const userDocRef = doc(db, "users", currentUser.uid)
-            await setDoc(userDocRef, {
-                username: formData.userName,
-                fullName: formData.fullName,
-                phoneNumber: formData.phoneNumber,
-                address: formData.address,
-            });
-
-            toast.success("Account details updated succesfully")
-            } catch (error) {
-
-            console.error(error);
-            toast.error("Failed to update account details")
-            }
+        } else{
+            try {
+                const userDocRef = doc(db, "users", currentUser.uid)
+                await setDoc(userDocRef, {
+                    userName: formData.userName,
+                    fullName: formData.fullName,
+                    phoneNumber: formatPhoneNumberIntl(phoneNumber),
+                    address: formData.address,
+                });
+    
+                toast.success("Account details updated succesfully")
+                setDisabled(true)
+                } catch (error) {
+    
+                console.error(error);
+                toast.error("Failed to update account details")
+                }
+        }
+        
 
     }
 
@@ -185,6 +195,7 @@ const Account= ()=>{
                         <button className={styles.button}  onClick={unable}>Change Details</button>
                     </div>
                     
+
                     <label>Username</label>
                     <input type="text" name="userName" onChange={handleInput} disabled={disabled} defaultValue={userData.userName}/>
 
@@ -192,8 +203,18 @@ const Account= ()=>{
                     <input type="text" name="fullName" onChange={handleInput} disabled={disabled} defaultValue={userData.fullName} />
 
                     <label>Phone number</label>
-                    <input type="tel" name="phoneNumber" onChange={handleInput} disabled={disabled} defaultValue={userData.phoneNumber}/>
-                    
+                    <PhoneInput
+                        className={styles.phoneInput}
+                        international
+                        value={phoneNumber}
+                        onChange={setPhoneNumber}
+                        defaultCountry= "CD"
+                        countryCallingCodeEditable={false}
+                        placeholder= "Phone Number"
+                        error = {phoneNumber && isPossiblePhoneNumber(phoneNumber) ? 'true' : 'false'}
+                        disabled={disabled} 
+                        defaultValue={userData.phoneNumber}
+                    />
 
                     <label>Address</label>
                     <input type="text" name="address" onChange={handleInput} disabled={disabled} defaultValue={userData.address}/>

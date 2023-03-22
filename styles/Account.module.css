@@ -54,7 +54,22 @@
     border-radius: 0.4rem;
 }
 
+.container> form> .phoneInput{
+    width: 83%;
+    outline: none;
+    padding: 0.8rem;
+    border: 2px solid rgb(213, 213, 213);
+    border-radius: 0.4rem;
+    border: none; 
+    margin: -0.7rem 0 0 -3rem;
+}
 
+  .container> form> .phoneInput > .PhoneInputCountryIcon{
+    position: absolute;
+    margin-left: -2rem;
+  }
+  
+  
 .container> form> .formHeader> .button{
     border-radius: 2rem;
     background-color: rgba(0, 0, 0, 0.1) ;
