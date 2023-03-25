@@ -12,9 +12,11 @@ import toast, {Toaster} from "react-hot-toast"
 
 const Food = ({dish}) => {
 
+
     const src = urlFor(dish.image).url()
     const [size, setSize] = useState(1)
     const [quantity, setQuantity] = useState(1)
+    const slug = dish.slug.current
 
     //handle quantity function 
     const handleQuantity = (type) => {
@@ -29,7 +31,12 @@ const Food = ({dish}) => {
     //Add to cart function 
     const addDish = useStore((state) => state.addDish)
     const addToCart = () =>{
+
+        const dishData = {slug, size, quantity}
         addDish({...dish, price: dish.price[size], quantity: quantity, size: size })
+        typeof window !== 'undefined' && localStorage.setItem('orderDish', slug)
+        typeof window !== 'undefined' && localStorage.setItem('orderQuantity', quantity)
+
         toast.success("Added to cart")
     }
 

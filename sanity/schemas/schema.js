@@ -5,7 +5,6 @@ import createSchema from 'part:@sanity/base/schema-creator'
 import schemaTypes from 'all:part:@sanity/base/schema-type'
 import Food from './food'
 import Order from './order'
-import User from './user'
 import HeroImage from './HeroImage'
 import Category from './category'
 
@@ -16,6 +15,6 @@ export default createSchema({
   // Then proceed to concatenate our document type
   // to the ones provided by any plugins that are installed
   types: schemaTypes.concat([
-     Food, Order, User, HeroImage, Category
+     Food, Order, HeroImage, Category
   ]),
 })

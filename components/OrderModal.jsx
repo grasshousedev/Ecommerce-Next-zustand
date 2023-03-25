@@ -5,17 +5,25 @@ import { useStore } from "../store/store"
 import { createOrder } from "../lib/orderHandler"
 import styles from "../styles/OrderModal.module.css"
 import { useRouter } from "next/router"
-
+import {db} from "../lib/firebase"
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { useAuth } from "../pages/Contexts/AuthContext";
 
 const OrderModal  = ({opened, setOpened, paymentMethod}) => {
 
     const total = typeof window !== 'undefined' &&  localStorage.getItem('total')
+    const dish = typeof window !== 'undefined' &&  localStorage.getItem('orderDish') 
+    const quantity = typeof window !== 'undefined' &&  localStorage.getItem('orderQuantity') 
+
+    
     const theme = useMantineTheme()
     const router = useRouter()
     const [formData, setFormData] = useState({})
     const[formErrors, setFormErrors]= useState({})
     const[isSubmit, setIsSubmit]= useState(false)
     const resetCart = useStore((state) => state.resetCart)
+    const {currentUser} = useAuth()
+    const [disableOrderSubmission, setDisableOrderSubmission ] = useState(false)
 
     //Form validation
     const validate = (formInput) =>{
@@ -37,30 +45,75 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
         return errors
     }
 
-
-    const handleSubmit = async (e)=>{
-        e.preventDefault()
-        setFormErrors(validate(formData)) 
-        setIsSubmit(true)
-        if(Object.keys(formErrors).length === 0 && isSubmit){
-            const id=  await createOrder({...formData, total, paymentMethod})
-            toast.success("Order Placed")
-            resetCart()
-            {
-                typeof window !== 'undefined' && localStorage.setItem('order', id)
-            }
-    
-            router.push(`/order/${id}`)
-        }
-       
-    }
-    
     const handleInput = (e) => {
         setFormData(
             {...formData, 
             [e.target.name] : e.target.value
             })
     }
+
+
+    const handleSubmit = async (e)=>{
+
+        e.preventDefault()
+        setFormErrors(validate(formData)) 
+        setDisableOrderSubmission(true)
+        
+        try{
+
+            if(Object.keys(formErrors).length === 0){
+
+                const id=  await createOrder({
+                    name: formData.name,
+                    phone: formData.phone,
+                    address: formData.address,
+                    dish, 
+                    quantity, 
+                    total,
+                    paymentMethod,
+                  
+    
+                    })
+    
+                toast.success("Order Placed")
+                resetCart()
+                {
+                    typeof window !== 'undefined' && localStorage.setItem('order', id)
+                }
+        
+                router.push(`/order/${id}`)
+            }
+
+        } catch (error){
+
+            console.log (error)
+            toast.error("Error, couldn't place an order!")
+
+        }
+   
+    }
+    
+   
+
+    // const setOrderDetails = async(e) =>{
+    //     e.preventDefault()
+
+    //     try{
+
+    //         const userDocRef = doc(db, "orders", currentUser.uid)
+    //             await setDoc(userDocRef, {
+                    
+    //             });
+    
+    //             toast.success("temp")
+
+    //     } catch(error){
+
+    //         console.log(error)
+    //         toast.error("temp ")
+
+    //     }
+    // }
 
 
     return ( 
@@ -87,7 +140,7 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
                 
             </span>
 
-            <button type="submit" onClick={handleSubmit} className="btn">Place Order</button>
+            <button type="submit" onClick={handleSubmit} className="btn" disabled={disableOrderSubmission}>Place Order</button>
         </form>
         <Toaster/>
 

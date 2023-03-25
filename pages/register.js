@@ -2,7 +2,6 @@ import Layout from "../components/Layout";
 import styles from "../styles/Register.module.css"
 import { useState, useEffect} from "react";
 import Link from "next/link";
-import {createUser} from "../lib/registerHandler"
 import toast,{Toaster} from "react-hot-toast";
 import {useRouter} from "next/router";
 import  {useStore}  from "../store/store";

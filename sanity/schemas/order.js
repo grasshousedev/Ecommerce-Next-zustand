@@ -31,17 +31,54 @@ export default{
         },
 
         {
-            name: 'method',
-            title: 'Method',
-            type: 'number',
+            name: 'dish',
+            title: 'dish',
+            type: 'string',
+         
 
         },
+
+        // {
+        //     name: 'dish',
+        //     title: 'dish',
+        //     type: 'array',
+        //     of: [{type: 'string'}]
+
+        // },
+
+        // {
+        //     name: 'quantity',
+        //     title: 'Quantity',
+        //     type: 'array',
+        //     of: [{type: 'number'}]
+
+        // },
+
+        {
+            name: 'quantity',
+            title: 'Quantity',
+            type: 'number',
+
+
+        },
+
+      
 
         {
             name: 'total',
             title: 'Total',
             type: 'number'
         },
+
+
+        {
+            name: 'method',
+            title: 'Method',
+            type: 'number',
+
+        },
+
+       
 
         
         {

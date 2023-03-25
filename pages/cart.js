@@ -15,6 +15,8 @@ const Cart = () => {
     const removeDish= useStore((state) => state.removeDish)
     const handleRemove = (index) =>{
         removeDish(index)
+        localStorage.removeItem('dish')
+        localStorage.removeItem('quantity')
         toast.error("Item Removed")
     }
     const total = () => cartData.dishes.reduce((a, b) => a + b.quantity * b.price, 0)

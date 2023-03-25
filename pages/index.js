@@ -10,6 +10,7 @@ import Menu from "../components/Menu";
 
 
 export default function Home({ food, heroImages, foodCategories}) {
+  
   return (
     <Layout>
       <div className={styles.container}>

@@ -29,14 +29,14 @@ export default{
 
             fields:[
                 {
-                    name: 'text',
-                    title: 'Link text',
+                    name: 'message',
+                    title: 'Text Message',
                     type: 'string'
                 },
 
                 {
                     name: 'url',
-                    title: 'Link url',
+                    title: 'Url',
                     type: 'url'
                 }
             ]

@@ -5,7 +5,6 @@ import Layout from "../components/Layout"
 import styles from "../styles/Login.module.css"
 import  {useStore}  from "../store/store";
 import Cookies from "js-cookie";
-import {loginUser} from "../lib/loginHandler"
 import {useAuth} from "./Contexts/AuthContext"
 
 
