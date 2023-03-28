@@ -1,12 +1,13 @@
 import { client } from "../../lib/client";
 
 export default async function handler(req, res) {
-    
+
     switch(req.method){
         case "POST": const newOrder = await JSON.parse(req.body);
         try {
             await client.create({
                 _type: "order",
+                date: newOrder.date,
                 name: newOrder.name,
                 phone: newOrder.phone,
                 address: newOrder.address,

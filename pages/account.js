@@ -157,7 +157,9 @@ const Account= ()=>{
         }
         try {
             const userDocRef = doc(db, "users", currentUser.uid)
+            const userOrderRef = doc(db, "orders", currentUser.uid)
             await deleteDoc(userDocRef)
+            await deleteDoc(userOrderRef)
             
         } catch(error){
             toast.error("Failed to delete account ")

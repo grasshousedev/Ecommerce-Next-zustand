@@ -14,6 +14,8 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
     const total = typeof window !== 'undefined' &&  localStorage.getItem('total')
     const dish = typeof window !== 'undefined' &&  localStorage.getItem('orderDish') 
     const quantity = typeof window !== 'undefined' &&  localStorage.getItem('orderQuantity') 
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().slice(0, 10);
 
     
     const theme = useMantineTheme()
@@ -64,6 +66,7 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
             if(Object.keys(formErrors).length === 0){
 
                 const id=  await createOrder({
+        
                     name: formData.name,
                     phone: formData.phone,
                     address: formData.address,
@@ -71,12 +74,13 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
                     quantity, 
                     total,
                     paymentMethod,
-                  
-    
+                    formattedDate,
                     })
-    
+
+                await setOrderDetails(id)
                 toast.success("Order Placed")
                 resetCart()
+
                 {
                     typeof window !== 'undefined' && localStorage.setItem('order', id)
                 }
@@ -95,25 +99,31 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
     
    
 
-    // const setOrderDetails = async(e) =>{
-    //     e.preventDefault()
+    const setOrderDetails = async (id) =>{
+       
+        try{
 
-    //     try{
-
-    //         const userDocRef = doc(db, "orders", currentUser.uid)
-    //             await setDoc(userDocRef, {
-                    
-    //             });
+            const userDocRef = doc(db, "orders", currentUser.uid)
+                await setDoc(userDocRef, {
+                id: id,
+                name: formData.name,
+                address: formData.address,
+                phoneNumber: formData.phone,
+                dish: dish,
+                quantity: quantity,
+                total: total,
+                date: formattedDate,   
+                });
     
-    //             toast.success("temp")
 
-    //     } catch(error){
+        } catch(error){
 
-    //         console.log(error)
-    //         toast.error("temp ")
+            console.log(error)
+            toast.error("Couldn't place the order, try again")
+            
 
-    //     }
-    // }
+        }
+    }
 
 
     return ( 

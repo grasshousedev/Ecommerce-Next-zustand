@@ -3,6 +3,17 @@ export default{
     title: 'Order',
     type: 'document',
     fields: [
+
+        {
+            title: 'Date',
+            name: 'date',
+            type: 'date',
+            options: {
+              dateFormat: 'YYYY-MM-DD',
+              calendarTodayLabel: 'Today'
+            }
+          },
+
         {
             name: 'name',
             title: 'Name',
