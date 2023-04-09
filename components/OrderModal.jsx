@@ -18,11 +18,16 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
     const dishQuantities = []
     const dishSizes = []
 
-    dishes.map( (dish) => {
-        dishSluges.push(dish.slug)
-        dishQuantities.push(dish.quantity)
-        dishSizes.push(dish.size)
-    })
+    if(dishes && dishes.length > 0){
+
+        dishes.map( (dish) => {
+            dishSluges.push(dish.slug)
+            dishQuantities.push(dish.quantity)
+            dishSizes.push(dish.size)
+        })
+
+    }
+    
 
 
     const currentDate = new Date();

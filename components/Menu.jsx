@@ -12,10 +12,13 @@ import 'swiper/css/navigation';
 
 
 const Menu = ({food, foodCategories}) => {
-    let mobile;
+    
+    let mobile
+
     if(typeof window !== 'undefined'){
         mobile= window.innerWidth <= 740 ? true : false
     }
+    
     const[menuData, setMenuData]=useState(food)
     const[activeId, setActiveId] = useState(0)
 
@@ -50,7 +53,9 @@ const Menu = ({food, foodCategories}) => {
 
                 <div className={styles.menu}>
              
-                    { menuData.map((dish, id)=>{
+                 
+                    { !mobile && 
+                        menuData.map((dish, id)=>{
                         const src = urlFor(dish.image).url()
                     
                         return(
@@ -86,6 +91,69 @@ const Menu = ({food, foodCategories}) => {
                             </div>
                         )
                     })}
+
+                    {mobile && 
+                    <Swiper
+                    modules={[Navigation]}
+                    navigation
+                    speed={800}
+                    spaceBetween={100}
+                    slidesPerView={1.5}
+                    pagination={{ clickable: true }}
+                    loop={true}
+                    autoplay={{
+                        delay: 2000, 
+                        stopOnLastSlide: false,
+                        disableOnInteraction: true,
+                    }}
+                
+                    className={styles.mySwiper}
+                    >
+
+                        {menuData.map((dish, id) =>{
+
+                            const src = urlFor(dish.image).url()
+
+                            return(
+                                <SwiperSlide key={id} className={styles.slide}>
+
+                                    <div className={styles.webMenu}>
+
+                                        <Link href={`./food/${dish.slug.current}`}>
+                                            
+                                                <div className={styles.imageWrapper}>
+                                                    <Image 
+                                                        loader= {() => src} 
+                                                        src={src} 
+                                                        alt=""
+                                                        objectFit="cover"
+                                                        layout="fill"
+                                                    />
+                                                </div>
+                                        </Link>
+
+                                        <div className={styles.details}>
+                                            <div className={styles.name}>
+                                                <span>{dish.name}</span>
+                                            </div>
+                                            <span><span style={{color: "var(--themeRed)", fontSize: "1.2rem"}}> $</span>{dish.price[1]}</span>
+                                        
+                                            <Link href={`./food/${dish.slug.current}`}>
+                                                <div className={styles.order}>
+                                                    <div>Order Now</div>
+                                                    <UilAngleRight/>
+                                                </div>
+                                            </Link>
+                                        </div>
+
+                                    </div>
+
+                                </SwiperSlide> 
+
+                                )   
+                                })} 
+
+                    </Swiper> }
 
 
                     

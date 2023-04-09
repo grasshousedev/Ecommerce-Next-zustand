@@ -4,7 +4,7 @@ import Cookies from "js-cookie"
 export const useStore =  create(
     
     (set) => ({
-      
+        
         mode: {
             darkMode: Cookies.get('darkMode') === 'ON' ? true : false
         },
@@ -28,10 +28,6 @@ export const useStore =  create(
                 darkMode: false
             }
         })),
-
-   
-      
-
         
         addDish: (data) =>
         set ((state) => ({
@@ -39,16 +35,6 @@ export const useStore =  create(
                 dishes : [... state.cart.dishes, data]
             }
         })),
-
-    //     addDish: (data) =>
-    //     set ((state) => ({
-    //         cart : {
-    //             dishes : [... state.cart.dishes, data]
-    //         }
-    //     }), () => {
-    //             typeof window !== 'undefined' && localStorage.setItem('dishes', JSON.stringify(useStore.getState().cart.dishes))
-    // }),
-
         
         removeDish : (index) =>
         set((state) => ({

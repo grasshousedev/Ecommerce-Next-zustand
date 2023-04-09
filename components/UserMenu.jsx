@@ -34,9 +34,9 @@ const UserMenu= ({isOpen, menuFunction}) =>{
                 <p onClick={() => menuFunction(false)}>Account</p>
             </Link>
 
-            <Link href='/orders'>
+            {/* <Link href='/orders'>
                 <p onClick={() => menuFunction(false)}>My Orders</p>
-            </Link>
+            </Link> */}
             <p onClick={LogoutAndClose}>Logout</p>
             <Toaster/>
 
