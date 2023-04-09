@@ -5,7 +5,7 @@ import { urlFor } from "../../lib/client";
 import styles from "../../styles/Dish.module.css"
 import LeftArrow from "../../assets/arrowLeft.png"
 import rightArrow from "../../assets/arrowRight.png"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "../../store/store";
 import toast, {Toaster} from "react-hot-toast"
 
@@ -18,7 +18,8 @@ const Food = ({dish}) => {
     const [quantity, setQuantity] = useState(1)
     const slug = dish.slug.current
 
-    //handle quantity function 
+    
+    
     const handleQuantity = (type) => {
         type === "increment" 
         ? setQuantity(  prevQuantity => prevQuantity + 1) 
@@ -28,16 +29,33 @@ const Food = ({dish}) => {
         
     }
 
-    //Add to cart function 
+    
     const addDish = useStore((state) => state.addDish)
+    const dishes = useStore((state) => state.cart.dishes)
+
+    const [addedDishes, setAddedDishes] = useState([])
+
+    useEffect(() =>{
+
+    const storedDishes = localStorage.getItem('dishes')
+    if (storedDishes) {
+    setAddedDishes(JSON.parse(storedDishes))
+    
+  }
+
+    }, [])
+
     const addToCart = () =>{
 
-        const dishData = {slug, size, quantity}
-        addDish({...dish, price: dish.price[size], quantity: quantity, size: size })
-        typeof window !== 'undefined' && localStorage.setItem('orderDish', slug)
-        typeof window !== 'undefined' && localStorage.setItem('orderQuantity', quantity)
+    const newDish = {...dish, slug: dish.slug.current, price: dish.price[size], quantity: quantity, size: size }
+    const newDishes = [...dishes, newDish]
+    
+    addDish(newDish)
+    setAddedDishes(newDishes)
 
-        toast.success("Added to cart")
+    typeof window !== 'undefined' && localStorage.setItem('dishes', JSON.stringify(newDishes))
+    toast.success("Added to cart")
+
     }
 
     return ( 

@@ -1,22 +1,27 @@
-import create from "zustand"
+import {create} from "zustand"
 import Cookies from "js-cookie"
 
 export const useStore =  create(
+    
     (set) => ({
-       //DarkMode
+      
         mode: {
             darkMode: Cookies.get('darkMode') === 'ON' ? true : false
         },
 
-        //Unable darkmode
+        cart : {
+            dishes : []
+        },
+
         darkModeOn: () => 
         set (() => ({
             mode: {
                 darkMode: true
             }
+            
         })),
 
-        //Disable dark mode 
+        
         darkModeOff: () =>
         set (() => ({
             mode:{
@@ -24,12 +29,10 @@ export const useStore =  create(
             }
         })),
 
-         //cart 
-         cart : {
-            dishes : []
-        },
+   
+      
 
-        //Add pizza in cart
+        
         addDish: (data) =>
         set ((state) => ({
             cart : {
@@ -37,7 +40,16 @@ export const useStore =  create(
             }
         })),
 
-        //Remove pizza 
+    //     addDish: (data) =>
+    //     set ((state) => ({
+    //         cart : {
+    //             dishes : [... state.cart.dishes, data]
+    //         }
+    //     }), () => {
+    //             typeof window !== 'undefined' && localStorage.setItem('dishes', JSON.stringify(useStore.getState().cart.dishes))
+    // }),
+
+        
         removeDish : (index) =>
         set((state) => ({
             cart : {
@@ -46,7 +58,7 @@ export const useStore =  create(
 
         })),
 
-        //Empty the cart
+    
         resetCart: () => 
         set(() =>({
             cart: {
@@ -54,29 +66,5 @@ export const useStore =  create(
             }
         })),
 
-        //User info
-        userInfo: Cookies.get('userInfo')
-        ? JSON.parse(Cookies.get('userInfo'))
-        : null,
-
-        
-       //User login
-       login: (data) =>
-       set((state) => ({
-            userInfo: {...state.userInfo, data}
-       })),
-
-       //User logout 
-       logout: () =>
-       set((state) =>({
-        userInfo: null,
-        cart: {
-            dishes: []
-        }
-       }))
-
-      
     })
-
-  
 )

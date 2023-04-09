@@ -12,11 +12,12 @@ import ProtectedRoute from "../components/ProtectedRoute";
 const Cart = () => {
     const [paymentMethod, setPaymentMethod] = useState(null)
     const cartData = useStore((state) => state.cart)
-    const removeDish= useStore((state) => state.removeDish)
+    const removeDish = useStore((state) => state.removeDish)
+   
+
     const handleRemove = (index) =>{
+        
         removeDish(index)
-        localStorage.removeItem('dish')
-        localStorage.removeItem('quantity')
         toast.error("Item Removed")
     }
     const total = () => cartData.dishes.reduce((a, b) => a + b.quantity * b.price, 0)

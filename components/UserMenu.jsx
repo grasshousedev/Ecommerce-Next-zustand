@@ -15,6 +15,7 @@ const UserMenu= ({isOpen, menuFunction}) =>{
     //Function to logout and close the modal
     const LogoutAndClose= async () =>{
         menuFunction(false)
+        typeof window !== 'undefined' && localStorage.clear()
         try{
             await logout()
             router.push('/login')

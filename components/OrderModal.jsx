@@ -9,11 +9,22 @@ import {db} from "../lib/firebase"
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useAuth } from "../pages/Contexts/AuthContext";
 
+
 const OrderModal  = ({opened, setOpened, paymentMethod}) => {
 
-    const total = typeof window !== 'undefined' &&  localStorage.getItem('total')
-    const dish = typeof window !== 'undefined' &&  localStorage.getItem('orderDish') 
-    const quantity = typeof window !== 'undefined' &&  localStorage.getItem('orderQuantity') 
+    const total = typeof window !== 'undefined' && parseFloat(localStorage.getItem('total'))
+    const dishes = typeof window !== 'undefined' &&  JSON.parse(localStorage.getItem('dishes')) 
+    const dishSluges = []
+    const dishQuantities = []
+    const dishSizes = []
+
+    dishes.map( (dish) => {
+        dishSluges.push(dish.slug)
+        dishQuantities.push(dish.quantity)
+        dishSizes.push(dish.size)
+    })
+
+
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().slice(0, 10);
 
@@ -26,6 +37,10 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
     const resetCart = useStore((state) => state.resetCart)
     const {currentUser} = useAuth()
     const [disableOrderSubmission, setDisableOrderSubmission ] = useState(false)
+
+   
+
+    
 
     //Form validation
     const validate = (formInput) =>{
@@ -70,14 +85,15 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
                     name: formData.name,
                     phone: formData.phone,
                     address: formData.address,
-                    dish, 
-                    quantity, 
+                    dishSluges,
+                    dishQuantities,
+                    dishSizes, 
                     total,
                     paymentMethod,
                     formattedDate,
                     })
 
-                await setOrderDetails(id)
+              setOrderDetails(id)
                 toast.success("Order Placed")
                 resetCart()
 
@@ -109,8 +125,9 @@ const OrderModal  = ({opened, setOpened, paymentMethod}) => {
                 name: formData.name,
                 address: formData.address,
                 phoneNumber: formData.phone,
-                dish: dish,
-                quantity: quantity,
+                dishSluges: dishSluges,
+                dishQuantities: dishQuantities,
+                dishSizes: dishSizes,
                 total: total,
                 date: formattedDate,   
                 });

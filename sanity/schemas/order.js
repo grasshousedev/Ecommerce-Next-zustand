@@ -41,37 +41,32 @@ export default{
             }
         },
 
+        
         {
-            name: 'dish',
-            title: 'dish',
-            type: 'string',
-         
+            name: 'dishSluges',
+            title: 'Sluges',
+            type: 'array',
+            of: [{type: 'string'}]
 
         },
 
-        // {
-        //     name: 'dish',
-        //     title: 'dish',
-        //     type: 'array',
-        //     of: [{type: 'string'}]
-
-        // },
-
-        // {
-        //     name: 'quantity',
-        //     title: 'Quantity',
-        //     type: 'array',
-        //     of: [{type: 'number'}]
-
-        // },
-
         {
-            name: 'quantity',
+            name: 'dishQuantities',
             title: 'Quantity',
-            type: 'number',
-
+            type: 'array',
+            of: [{type: 'number'}]
 
         },
+
+        {
+            name: 'dishSizes',
+            title: 'Sizes',
+            type: 'array',
+            of: [{type: 'number'}]
+
+        },
+
+        
 
       
 

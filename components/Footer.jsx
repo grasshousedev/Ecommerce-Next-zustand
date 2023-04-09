@@ -10,7 +10,7 @@ import  {useStore}  from "../store/store"
 
 import { UilInstagram, UilFacebook, UilLinkedin } from '@iconscout/react-unicons';
 const Footer = () => {
-    const darkMode = useStore((state) => state.mode.darkMode)
+    const darkMode = useStore((state) => state.mode && state.mode.darkMode)
     return (  
         <div className={darkMode ? `${styles.darkMode} ${styles.container}` : `${styles.container}`}>
             <div className={styles.col}>
