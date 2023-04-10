@@ -1,7 +1,7 @@
 import styles from "../styles/Header.module.css"
 import Image from "next/image"
 import Logo from "../assets/logo.png"
-import {UilShoppingBag, UilReceipt, UilSun, UilMoon, UilBars, UilTimes} from "@iconscout/react-unicons"
+import {UilShoppingBag, UilReceipt, UilSun, UilMoon, UilBars, UilTimes, UilUser, UilAngleDown} from "@iconscout/react-unicons"
 import  {useStore}  from "../store/store"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -10,9 +10,11 @@ import UserMenu from "./UserMenu"
 import {useAuth} from "../pages/Contexts/AuthContext"
 import { doc, getDoc } from "firebase/firestore"
 import {db} from "../lib/firebase"
+import { useRouter } from "next/router"
 
 const Header = () => {
-
+    
+    const router = useRouter()
     let mobile;
 
     if(typeof window !== 'undefined'){
@@ -25,11 +27,25 @@ const Header = () => {
         setOrder(localStorage.getItem("order"))
     }, [])
 
-    //Getting the current user status from AuthContexts (Firebase)
-    const {currentUser}= useAuth()
     
-    //Function to open and close the navigation menu on mobile
+    const {currentUser, logout}= useAuth()
+
+    const LogoutAndClose= async () =>{
+        setMobileMenu(false)
+        typeof window !== 'undefined' && localStorage.clear()
+        try{
+            await logout()
+            router.push('/login')
+        } catch{
+            toast.error("Failde to logout!")
+        }
+     
+        router.push('/')
+    }
+    
+
     const[mobileMenu, setMobileMenu] = useState(false)
+
    const mobileNavigation= ()=>{
         setMobileMenu(true)
    }
@@ -41,9 +57,13 @@ const Header = () => {
     const userInfo= useStore((state) => state.userInfo)
     
 
-    //User modal state
+    
     const [userMenu, setUserMenu]= useState(false)
+    const [mobileUserMenu, setMobileUserMenu] = useState(false)
 
+    const handleMobileUserMenu = () =>{
+        setMobileUserMenu((prevState) => !prevState)
+    }
     const handlerDarkMode= () =>{
        darkMode ? darkModeOff() : darkModeOn()
        const newMode= !darkMode
@@ -114,8 +134,14 @@ const Header = () => {
                     <UilMoon  className={ darkMode &&  `${styles.active}`} onClick={handlerDarkMode}/>
                 </div>
                 
-                {currentUser
-                    ? <p className={styles.user} onClick={handleUserMenu} >{userName}</p>
+                {(currentUser && !mobile) ?
+                <div className={styles.userMenu}>
+                    <UilUser size={20}/>
+                    <p className={styles.user} onClick={handleUserMenu} >{userName}</p> 
+                    {userMenu ? <UilAngleDown size={20} className={styles.rotatedIcon} /> : <UilAngleDown size={20}  /> }
+
+                </div>
+                 
                     : (
                         
                         <div className={styles.authButton}> 
@@ -132,6 +158,8 @@ const Header = () => {
                         
     
                 )}
+
+                
                     
                 {/* USER MENU */}
                 <UserMenu
@@ -141,7 +169,7 @@ const Header = () => {
 
                 <Link href="/cart">
                     <div className={styles.cart}>
-                        <UilShoppingBag size={35} color="#2E2E2E"/>
+                        <UilShoppingBag size={35}  className={styles.cart}  color="#2E2E2E"/>
                         <div className={styles.badge}>{items}</div>
                     </div>
                 </Link>
@@ -149,7 +177,7 @@ const Header = () => {
                 {order && (
                     <Link href={`/order/${order}`}>
                         <div className={styles.cart}>
-                            <UilReceipt size={35} className={styles.receipt}  color='#2E2E2E'/>
+                            <UilReceipt size={30} className={styles.receipt}  color='#2E2E2E'/>
                             {order != "" && <div className={styles.badge}>1</div>}
 
                         </div>
@@ -157,11 +185,47 @@ const Header = () => {
                 )}
 
                 {/* MOBILE MENU */}
-                { mobile && <UilBars size={35} className={styles.hamburger} onClick={mobileNavigation}/> }
+                { (mobile && !mobileMenu) && <UilBars size={30} className={styles.hamburger} onClick={mobileNavigation}/> }
+                { (mobile && mobileMenu) &&  <UilTimes  size={30} onClick={() =>setMobileMenu(false)}/>}
 
                 {(mobile && mobileMenu) &&
                 <ul className={styles.mobileMenu}>
-                    <UilTimes onClick={() =>setMobileMenu(false)}/>
+
+                    {currentUser ?
+                    <div className={styles.mobileUserMenu}>
+                        <UilUser size={20}/>
+                        <p className={styles.user} onClick={handleMobileUserMenu} >{userName}</p> 
+                        {mobileUserMenu ?   <UilAngleDown size={20} className={styles.rotatedIcon} /> :    <UilAngleDown size={20}  />}
+
+                    </div>:
+                    
+                    <div className={styles.authButtonMobile}> 
+                        <Link href="/login">
+                            <button className={` btn ${styles.login}`}>Login</button>
+                    
+                        </Link>
+        
+                        <Link href="/register">
+                            <button className={`btn ${styles.signUp}`}>Register</button>
+                        </Link>
+                    
+                    </div>
+                    } 
+
+                    {(currentUser &&  mobileUserMenu ) && 
+                    <div className={styles.mobileUserMenuItems}>
+                        <li>
+                            <Link href='/account' onClick={ () => setUserMenu(false)}>Account</Link>
+                        </li>
+
+                        <li>
+                            <p  onClick={LogoutAndClose}>Logout</p>
+                        </li>
+                    </div>
+                      }
+
+                   
+                    
                     <li>
                     <Link href='../'>Home</Link>
                     </li>

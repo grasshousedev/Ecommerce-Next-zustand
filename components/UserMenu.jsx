@@ -9,10 +9,9 @@ import {useAuth} from "../pages/Contexts/AuthContext"
 
 const UserMenu= ({isOpen, menuFunction}) =>{ 
     const router= useRouter()
-// importing logout from AuthContexts
+
     const {logout}= useAuth()
 
-    //Function to logout and close the modal
     const LogoutAndClose= async () =>{
         menuFunction(false)
         typeof window !== 'undefined' && localStorage.clear()
