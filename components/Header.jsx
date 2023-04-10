@@ -161,7 +161,7 @@ const Header = () => {
                 </div>
                 
                 {(currentUser && !mobile) ?
-                <div className={styles.userMenu} ref= {userMenuRef}>
+                <div className={styles.userMenu}>
                     <UilUser size={20}/>
                     <p className={styles.user} onClick={handleUserMenu} >{userName}</p> 
                     {userMenu ? <UilAngleDown size={20} className={styles.rotatedIcon} /> : <UilAngleDown size={20}  /> }
@@ -188,11 +188,14 @@ const Header = () => {
                 
                     
                 {/* USER MENU */}
-                <UserMenu
-                isOpen={userMenu}
-                menuFunction={setUserMenu}
+                <div  ref= {userMenuRef}>
+                    <UserMenu
+                    isOpen={userMenu}
+                    menuFunction={setUserMenu}
+                   
+                    />
+                </div>
                 
-                />
 
                 <Link href="/cart">
                     <div className={styles.cart}>

@@ -24,11 +24,3 @@
      cursor: pointer;
 }
 
-@media screen and (max-width: 480px){
-    .container{
-        top: 9rem;
-        right: 2rem;
-        background-color: blue;
-    }
-}
-
