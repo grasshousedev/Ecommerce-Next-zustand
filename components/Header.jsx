@@ -4,7 +4,7 @@ import Logo from "../assets/logo.png"
 import {UilShoppingBag, UilReceipt, UilSun, UilMoon, UilBars, UilTimes, UilUser, UilAngleDown} from "@iconscout/react-unicons"
 import  {useStore}  from "../store/store"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Cookies from "js-cookie"
 import UserMenu from "./UserMenu"
 import {useAuth} from "../pages/Contexts/AuthContext"
@@ -12,8 +12,29 @@ import { doc, getDoc } from "firebase/firestore"
 import {db} from "../lib/firebase"
 import { useRouter } from "next/router"
 
+
 const Header = () => {
     
+    const userMenuRef = useRef(null)
+
+    useEffect(() =>{
+
+        document.addEventListener('click', handleClickOutside, true)
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+        }
+
+    }, [])
+
+    const handleClickOutside = (e) =>{
+
+        if( !userMenuRef.current.contains(e.target)){
+            setUserMenu(false)
+        }
+        console.log(userMenuRef)
+        
+    }
+
     const router = useRouter()
     let mobile;
 
@@ -62,13 +83,18 @@ const Header = () => {
     const [mobileUserMenu, setMobileUserMenu] = useState(false)
 
     const handleMobileUserMenu = () =>{
+        
         setMobileUserMenu((prevState) => !prevState)
     }
+
     const handlerDarkMode= () =>{
+
        darkMode ? darkModeOff() : darkModeOn()
        const newMode= !darkMode
        Cookies.set('darkMode', darkMode ? 'ON' : 'OFF')
+
     }
+
     const handleUserMenu= () =>{
         setUserMenu((prevState) => !prevState)
     }
@@ -76,6 +102,7 @@ const Header = () => {
     const[userName, setUserName] = useState("")
 
     const fetchUserName = async() =>{
+
         try {
             const docRef = doc(db, "users", currentUser.uid)
             const docSnap = await getDoc(docRef)
@@ -100,8 +127,7 @@ const Header = () => {
 
     return ( 
         <div className={styles.header}>
-             {/* HAMBURGER */}
-             {/* {mobile &&<UilBars/>} */}
+           
             {/* LOGO SIDE */}
             <div className={styles.logo}>
                 <Image src={Logo} alt="" width={50} height={50}/> 
@@ -135,7 +161,7 @@ const Header = () => {
                 </div>
                 
                 {(currentUser && !mobile) ?
-                <div className={styles.userMenu}>
+                <div className={styles.userMenu} ref= {userMenuRef}>
                     <UilUser size={20}/>
                     <p className={styles.user} onClick={handleUserMenu} >{userName}</p> 
                     {userMenu ? <UilAngleDown size={20} className={styles.rotatedIcon} /> : <UilAngleDown size={20}  /> }
@@ -165,6 +191,7 @@ const Header = () => {
                 <UserMenu
                 isOpen={userMenu}
                 menuFunction={setUserMenu}
+                
                 />
 
                 <Link href="/cart">
