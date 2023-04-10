@@ -28,10 +28,9 @@ const Header = () => {
 
     const handleClickOutside = (e) =>{
 
-        if( !userMenuRef.current.contains(e.target)){
+        if( userMenu && !userMenuRef.current.contains(e.target)){
             setUserMenu(false)
         }
-        console.log(userMenuRef)
         
     }
 
