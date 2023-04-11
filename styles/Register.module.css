@@ -34,3 +34,17 @@
 .signUp:hover{
     cursor: pointer;
 }
+
+@media screen and (max-width: 480px) {
+    .formContainer{
+        margin-top: 2rem;
+    }
+
+    .formContainer>input{
+        width: 70%;   
+    }
+
+    .formContainer>button{
+        width: 70%;
+    }
+}
