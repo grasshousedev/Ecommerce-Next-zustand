@@ -33,7 +33,7 @@ const Order= ()=>{
             fetchUserData()
         }
      
-    }, [currentUser])
+    }, [currentUser, fetchUserData])
     
     return(
         currentUser &&
