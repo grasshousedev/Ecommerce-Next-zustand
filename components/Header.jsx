@@ -24,7 +24,7 @@ const Header = () => {
             document.removeEventListener('click', handleClickOutside)
         }
 
-    }, [])
+    }, [handleClickOutside])
 
     const handleClickOutside = (e) =>{
 
@@ -121,7 +121,7 @@ const Header = () => {
             fetchUserName()
         }
        
-    }, [currentUser])
+    }, [currentUser, fetchUserName])
    
 
     return ( 
