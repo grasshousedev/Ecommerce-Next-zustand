@@ -155,8 +155,8 @@ const Header = () => {
             {/* RIGTH SIDE */}
             <div className={styles.rightSide}>
                 <div className={styles.toggler} >
-                    <UilSun className={!darkMode && `${styles.active}`} onClick={handlerDarkMode}/>
-                    <UilMoon  className={ darkMode &&  `${styles.active}`} onClick={handlerDarkMode}/>
+                    <UilSun className={!darkMode ? `${styles.active}` : undefined} onClick={handlerDarkMode}/>
+                    <UilMoon  className={ darkMode ? `${styles.active}` : undefined} onClick={handlerDarkMode}/>
                 </div>
                 
                 {(currentUser && !mobile) ?
