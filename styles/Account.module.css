@@ -19,11 +19,12 @@
 .container> form>  .formHeader{
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-.container> form> label, .container> form> .emailContainer> label {
+.container> form> label, .container> form> .emailContainer {
     font-size: 0.9rem; 
-    color: rgb(61, 58, 58)
+    color: rgb(61, 58, 58);
 }
 
 
@@ -64,11 +65,6 @@
     margin: -0.7rem 0 0 -3rem;
 }
 
-  .container> form> .phoneInput > .PhoneInputCountryIcon{
-    position: absolute;
-    margin-left: -2rem;
-  }
-  
   
 .container> form> .formHeader> .button{
     border-radius: 2rem;
@@ -79,6 +75,7 @@
     border: 0;
     outline: none;
 }
+
 
 .container> form > .detailButtons, .container> form > .emailContainer> .detailButtons {
     display: flex;
@@ -185,6 +182,53 @@
     outline: none;
    
 }
+
+@media screen and (max-width: 480px){
+    .container{
+        width: 80%;
+    }
+
+    .container> form>  .formHeader{
+        display: flex;
+        gap: 0.2rem;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+    
+    
+
+    .container> form> .formHeader> .button, .container> .accountDeletion> .formHeader> .button{
+        margin-right: 0.3rem;
+        padding:  0.5rem 0.4rem;
+       
+    }
+
+    .container> form> .phoneInput{
+        width: 93.5%;
+    }
+
+    .container> form> label, .container> form> .emailContainer {
+        margin-top: 0.5rem;
+    }
+
+    .container> form> .emailContainer> .email{
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .container> form> .emailContainer> .email>  input{
+        margin-top: 0.6rem;
+    }
+    
+
+   
+
+    
+
+    
+}
+
+
 
 
 
