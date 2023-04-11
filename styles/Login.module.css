@@ -54,3 +54,17 @@
     background-color: rgb(213, 213, 213);
     margin: 1rem 0;
   }
+
+@media screen and (max-width: 480px) {
+    .formContainer{
+        margin-top: 2rem;
+    }
+
+    .formContainer>input{
+        width: 70%;   
+    }
+
+    .formContainer>button{
+        width: 70%;
+    }
+}
