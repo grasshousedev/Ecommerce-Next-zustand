@@ -29,6 +29,7 @@
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
+    "eslint": "^8.38.0",
     "eslint-config-next": "12.2.0"
   }
 }
