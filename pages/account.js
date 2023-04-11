@@ -190,7 +190,7 @@ const Account= ()=>{
             fetchUserData()
         }
        
-    }, [currentUser])
+    }, [currentUser, fetchUserData])
 
     return(
     currentUser &&
