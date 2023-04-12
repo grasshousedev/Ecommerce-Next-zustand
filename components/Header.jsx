@@ -1,6 +1,6 @@
 import styles from "../styles/Header.module.css"
 import Image from "next/image"
-import Logo from "../assets/logo.png"
+import logo from "../assets/logo.png"
 import {UilShoppingBag, UilReceipt, UilSun, UilMoon, UilBars, UilTimes, UilUser, UilAngleDown} from "@iconscout/react-unicons"
 import  {useStore}  from "../store/store"
 import Link from "next/link"
@@ -133,7 +133,7 @@ const Header = () => {
            
             {/* LOGO SIDE */}
             <div className={styles.logo}>
-                <Image src={Logo} alt="" width={50} height={50}/> 
+                <Image src={logo} alt="" width={50} height={50}/> 
                 <span className={styles.logoText}>Chepe-chepe</span>
             </div>
 

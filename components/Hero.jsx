@@ -1,6 +1,6 @@
 import styles from "../styles/Hero.module.css";
 import Image from "next/image";
-import Cherry from "../assets/cherry.png";
+import cherry from "../assets/cherry.png";
 import {UilWhatsapp} from "@iconscout/react-unicons";
 import Pizza1 from "../assets/p1.jpg";
 import Link from "next/link";
@@ -16,7 +16,7 @@ const Hero = ({heroImages}) => {
             <div className={styles.left}>
                 <div className={styles.cherryDiv}>
                     <span>More than faster</span>
-                    <Image src={Cherry} alt="" width={40} height={25}/>
+                    <Image src={cherry} alt="" width={40} height={25}/>
 
                 </div>
                 <div className={styles.heroText}>
