@@ -19,20 +19,22 @@ const Header = () => {
 
     useEffect(() =>{
 
+        const handleClickOutside = (e) =>{
+
+            if( userMenu && !userMenuRef.current.contains(e.target)){
+                setUserMenu(false)
+            }
+            
+        }
+
         document.addEventListener('click', handleClickOutside, true)
         return () => {
             document.removeEventListener('click', handleClickOutside)
         }
 
-    }, [handleClickOutside])
+    }, [userMenu, userMenuRef])
 
-    const handleClickOutside = (e) =>{
-
-        if( userMenu && !userMenuRef.current.contains(e.target)){
-            setUserMenu(false)
-        }
-        
-    }
+    
 
     const router = useRouter()
     let mobile;
@@ -100,28 +102,30 @@ const Header = () => {
 
     const[userName, setUserName] = useState("")
 
-    const fetchUserName = async() =>{
-
-        try {
-            const docRef = doc(db, "users", currentUser.uid)
-            const docSnap = await getDoc(docRef)
-
-            if(docSnap.exists()){
-
-                setUserName(docSnap.data().userName)  
-            }
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
+    
     useEffect(()=> {
+
+        const fetchUserName = async() =>{
+
+            try {
+                const docRef = doc(db, "users", currentUser.uid)
+                const docSnap = await getDoc(docRef)
+    
+                if(docSnap.exists()){
+    
+                    setUserName(docSnap.data().userName)  
+                }
+    
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    
         if(currentUser){
             fetchUserName()
         }
        
-    }, [currentUser, fetchUserName])
+    }, [currentUser])
    
 
     return ( 

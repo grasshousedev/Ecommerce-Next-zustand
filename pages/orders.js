@@ -13,27 +13,29 @@ const Order= ()=>{
     const {currentUser} = useAuth()
     const [userData, setUserData] = useState()
 
-    const fetchUserData = async () => {
-        try {
-            const docRef = doc(db, "orders", currentUser.uid)
-            const docSnap = await getDoc(docRef)
-
-            if(docSnap.exists()){
-                setUserData(docSnap.data())  
-            }
-
-        } catch (error) {
-            console.log(error)
-        }  
-    }
+    
 
     useEffect(() => {
+
+        const fetchUserData = async () => {
+            try {
+                const docRef = doc(db, "orders", currentUser.uid)
+                const docSnap = await getDoc(docRef)
+    
+                if(docSnap.exists()){
+                    setUserData(docSnap.data())  
+                }
+    
+            } catch (error) {
+                console.log(error)
+            }  
+        }
 
         if(currentUser){
             fetchUserData()
         }
      
-    }, [currentUser, fetchUserData])
+    }, [currentUser])
     
     return(
         currentUser &&
