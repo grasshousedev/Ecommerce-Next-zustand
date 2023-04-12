@@ -136,7 +136,7 @@ const Menu = ({food, foodCategories}) => {
                                             <div className={styles.name}>
                                                 <span>{dish.name}</span>
                                             </div>
-                                            <span><span style={{color: "var(--themeRed)", fontSize: "1.2rem"}}> $</span>{dish.price[1]}</span>
+                                            <span><span style={{color: "var(--themeRed)", fontSize: "1.2rem"}}> &#36</span>{dish.price[1]}</span>
                                         
                                             <Link href={`./food/${dish.slug.current}`}>
                                                 <div className={styles.order}>
