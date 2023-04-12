@@ -1,6 +1,6 @@
 import styles from "../styles/Header.module.css"
 import Image from "next/image"
-import logo from "../assets/logo.png"
+import Logo from "../assets/Logo.png"
 import {UilShoppingBag, UilReceipt, UilSun, UilMoon, UilBars, UilTimes, UilUser, UilAngleDown} from "@iconscout/react-unicons"
 import  {useStore}  from "../store/store"
 import Link from "next/link"
@@ -133,7 +133,7 @@ const Header = () => {
            
             {/* LOGO SIDE */}
             <div className={styles.logo}>
-                <Image src={logo} alt="" width={50} height={50}/> 
+                <Image src={Logo} alt="" width={50} height={50}/> 
                 <span className={styles.logoText}>Chepe-chepe</span>
             </div>
 
@@ -158,10 +158,10 @@ const Header = () => {
 
             {/* RIGTH SIDE */}
             <div className={styles.rightSide}>
-                <div className={styles.toggler} >
+                {/* <div className={styles.toggler} >
                     <UilSun className={!darkMode ? `${styles.active}` : undefined} onClick={handlerDarkMode}/>
                     <UilMoon  className={ darkMode ? `${styles.active}` : undefined} onClick={handlerDarkMode}/>
-                </div>
+                </div> */}
                 
                 {(currentUser && !mobile) ?
                 <div className={styles.userMenu}>
