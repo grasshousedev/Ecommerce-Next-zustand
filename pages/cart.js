@@ -32,7 +32,7 @@ const Cart = () => {
 
     const handleOnlinePayment = () =>{
         toast('This option is not available for now! Coming soon', {
-            icon: '🙂',
+            icon: '😉',
           });
     }
 
