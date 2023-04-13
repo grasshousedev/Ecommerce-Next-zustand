@@ -30,6 +30,12 @@ const Cart = () => {
         typeof window !== 'undifined' && localStorage.setItem('total', total())
     }
 
+    const handleOnlinePayment = () =>{
+        toast('This option is not available for now! Coming soon', {
+            icon: '🙂',
+          });
+    }
+
 
     return ( 
         <Layout>
@@ -130,7 +136,7 @@ const Cart = () => {
 
                             <div className={styles.buttons}>
                                 <button className="btn" onClick={handleOnDelivery}>Pay On Delivery</button>
-                                <button className="btn">Pay Now</button>
+                                <button className="btn" onClick={handleOnlinePayment}>Pay Now</button>
                             </div>
                         </div>
                     </div>
