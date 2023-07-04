@@ -6,20 +6,43 @@ import Pizza1 from "../assets/p1.jpg";
 import Link from "next/link";
 import {urlFor} from "../lib/client";
 import Carousel from "./Carousel";
+import { useState, useEffect } from "react";
 
 
 const Hero = ({heroImages}) => {
 
+    const[viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' && window.innerWidth)
+
+   useEffect(() =>{
+
+    if(typeof window !== 'undefined' ){
+
+        const handleResize = () =>{
+            setViewportWidth(window.innerWidth)
+            
+        }
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }
+
+   }, [])
+
+   const newFontSize = Math.max(viewportWidth / 21, 32);
+
+
     return (
         <div className={styles.container}>
+           
             {/* LEFT SIDE */}
             <div className={styles.left}>
+            
                 <div className={styles.cherryDiv}>
                     <span>More than faster</span>
+        
                     <Image src={Cherry} alt="" width={40} height={25}/>
 
                 </div>
-                <div className={styles.heroText}>
+                <div className={styles.heroText} style={{fontSize: `${newFontSize}px`}}>
                     <span>Be the fastest</span>
                     <span> In Delivering</span>
                     <span> your 

@@ -16,7 +16,7 @@ const Menu = ({food, foodCategories}) => {
     let mobile
 
     if(typeof window !== 'undefined'){
-        mobile= window.innerWidth <= 740 ? true : false
+        mobile= window.innerWidth <= 645 ? true : false
     }
     
     const[menuData, setMenuData]=useState(food)

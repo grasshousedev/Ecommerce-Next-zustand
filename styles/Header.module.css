@@ -118,7 +118,7 @@
 
 /* MOBILE RESPONSIVNESS */
 
-@media screen and (max-width: 480px){
+@media screen and (max-width: 890px){
     .menu{
         display: none;
     }
@@ -136,12 +136,20 @@
         height: 1.8rem;
         width: 1.8rem;
         margin-top: -0.01rem;
+        margin-right: 3rem;
     }
 
     .badge{
         height: 1.1rem;
         width: 1.1rem;
     }
+
+    .hamburger{
+        position: absolute;
+        display: block;
+        margin-top: 0.2rem;
+    }
+
 
 
     .hamburger:hover{
@@ -218,4 +226,11 @@
    }
 
 }
+
+
+@media screen and (max-width: 1070px){
+   .logoText{
+    display: none;
+   }
+  } 
 

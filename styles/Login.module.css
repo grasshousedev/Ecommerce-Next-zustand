@@ -55,16 +55,24 @@
     margin: 1rem 0;
   }
 
-@media screen and (max-width: 480px) {
+  .formContainer>input{
+    width: 30%;   
+}
+
+.formContainer>button{
+    width: 30%;
+}
+
+@media screen and (max-width: 1000px) {
     .formContainer{
         margin-top: 2rem;
     }
 
     .formContainer>input{
-        width: 70%;   
+        width: 40%;   
     }
 
     .formContainer>button{
-        width: 70%;
+        width: 40%;
     }
 }

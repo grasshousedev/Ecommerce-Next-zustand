@@ -16,18 +16,19 @@ import { useRouter } from "next/router"
 const Header = () => {
     
     const userMenuRef = useRef(null)
+    const [userMenu, setUserMenu]= useState(false)
 
     useEffect(() =>{
 
-        const handleClickOutside = (e) =>{
+        const handleClickOutside = (e) => {
+                if (userMenu && !userMenuRef.current.contains(e.target)) {
+                  setUserMenu(false);
+                }
+              };
+              
+        
 
-            if( userMenu && !userMenuRef.current.contains(e.target)){
-                setUserMenu(false)
-            }
-            
-        }
-
-        document.addEventListener('click', handleClickOutside, true)
+        document.addEventListener('click', handleClickOutside)
         return () => {
             document.removeEventListener('click', handleClickOutside)
         }
@@ -38,9 +39,11 @@ const Header = () => {
 
     const router = useRouter()
     let mobile;
+    let showHamburger;
 
     if(typeof window !== 'undefined'){
          mobile=  window.innerWidth <= 740 ? true : false
+         showHamburger= window.innerWidth <=890 ? true : false
     }
 
     const [order, setOrder] = useState("")
@@ -80,7 +83,7 @@ const Header = () => {
     
 
     
-    const [userMenu, setUserMenu]= useState(false)
+    
     const [mobileUserMenu, setMobileUserMenu] = useState(false)
 
     const handleMobileUserMenu = () =>{
@@ -202,7 +205,7 @@ const Header = () => {
 
                 <Link href="/cart">
                     <div className={styles.cart}>
-                        <UilShoppingBag size={35}  className={styles.cart}  color="#2E2E2E"/>
+                        <UilShoppingBag size={35}  className={styles.cartIcon}  color="#2E2E2E"/>
                         <div className={styles.badge}>{items}</div>
                     </div>
                 </Link>
@@ -218,7 +221,7 @@ const Header = () => {
                 )}
 
                 {/* MOBILE MENU */}
-                { (mobile && !mobileMenu) && <UilBars size={30} className={styles.hamburger} onClick={mobileNavigation}/> }
+                { (showHamburger && !mobileMenu) && <UilBars size={30} className={styles.hamburger} onClick={mobileNavigation}/> }
                 { (mobile && mobileMenu) &&  <UilTimes  size={30} onClick={() =>setMobileMenu(false)}/>}
 
                 {(mobile && mobileMenu) &&
