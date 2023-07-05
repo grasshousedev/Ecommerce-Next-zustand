@@ -18,23 +18,19 @@ const Header = () => {
     const userMenuRef = useRef(null)
     const [userMenu, setUserMenu]= useState(false)
 
-    useEffect(() =>{
-
-        const handleClickOutside = (e) => {
-                if (userMenu && !userMenuRef.current.contains(e.target)) {
-                  setUserMenu(false);
-                }
-              };
-              
-        
-
-        document.addEventListener('click', handleClickOutside)
-        return () => {
-            document.removeEventListener('click', handleClickOutside)
-        }
-
-    }, [userMenu, userMenuRef])
-
+    // useEffect(() => {
+    //     const handleClickOutside = (e) => {
+    //       if (userMenu && !userMenuRef.current.contains(e.target)) {
+    //         setUserMenu(false);
+    //       }
+    //     };
+      
+    //     document.addEventListener("click", handleClickOutside);
+    //     return () => {
+    //       document.removeEventListener("click", handleClickOutside);
+    //     };
+    //   }, [userMenu]);
+      
     
 
     const router = useRouter()
@@ -167,9 +163,9 @@ const Header = () => {
                 </div> */}
                 
                 {(currentUser && !mobile) ?
-                <div className={styles.userMenu}>
+                <div className={styles.userMenu} onClick={handleUserMenu}>
                     <UilUser size={20}/>
-                    <p className={styles.user} onClick={handleUserMenu} >{userName}</p> 
+                    <p className={styles.user}  >{userName}</p> 
                     {userMenu ? <UilAngleDown size={20} className={styles.rotatedIcon} /> : <UilAngleDown size={20}  /> }
 
                 </div>
