@@ -17,21 +17,20 @@ const Header = () => {
     
     const userMenuRef = useRef(null)
     const [userMenu, setUserMenu]= useState(false)
-
-    // useEffect(() => {
-    //     const handleClickOutside = (e) => {
-    //       if (userMenu && !userMenuRef.current.contains(e.target)) {
-    //         setUserMenu(false);
-    //       }
-    //     };
-      
-    //     document.addEventListener("click", handleClickOutside);
-    //     return () => {
-    //       document.removeEventListener("click", handleClickOutside);
-    //     };
-    //   }, [userMenu]);
-      
     
+    const handleClickOutside = (e) =>{
+        if( !userMenuRef.current.contains(e.target)){
+            setUserMenu(false)
+        }
+    }
+
+    useEffect(() =>{
+        window.addEventListener('click', handleClickOutside)
+        return () =>{
+            window.removeEventListener('click', handleClickOutside)
+        }
+    }, [])
+
 
     const router = useRouter()
     let mobile;
@@ -163,7 +162,7 @@ const Header = () => {
                 </div> */}
                 
                 {(currentUser && !mobile) ?
-                <div className={styles.userMenu} onClick={handleUserMenu}>
+                <div className={styles.userMenu} onClick={handleUserMenu} ref={userMenuRef}>
                     <UilUser size={20}/>
                     <p className={styles.user}  >{userName}</p> 
                     {userMenu ? <UilAngleDown size={20} className={styles.rotatedIcon} /> : <UilAngleDown size={20}  /> }
@@ -190,13 +189,12 @@ const Header = () => {
                 
                     
                 {/* USER MENU */}
-                <div  ref= {userMenuRef}>
+        
                     <UserMenu
                     isOpen={userMenu}
-                    menuFunction={setUserMenu}
-                   
+                    setIsOpen={setUserMenu}
                     />
-                </div>
+            
                 
 
                 <Link href="/cart">

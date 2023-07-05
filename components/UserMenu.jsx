@@ -7,13 +7,12 @@ import { useRouter } from "next/router";
 import {useAuth} from "../pages/Contexts/AuthContext"
 
 
-const UserMenu= ({isOpen, menuFunction}) =>{ 
+const UserMenu= ({isOpen, setIsOpen}) =>{ 
+
     const router= useRouter()
-
     const {logout}= useAuth()
-
     const LogoutAndClose= async () =>{
-        menuFunction(false)
+        setIsOpen(false)
         typeof window !== 'undefined' && localStorage.clear()
         try{
             await logout()
@@ -30,7 +29,7 @@ const UserMenu= ({isOpen, menuFunction}) =>{
     isOpen && (
         <div className={styles.container}>
             <Link href='/account'>
-                <p onClick={() => menuFunction(false)}>Account</p>
+                <p onClick={() => setIsOpen(false)}>Account</p>
             </Link>
 
             {/* <Link href='/orders'>
