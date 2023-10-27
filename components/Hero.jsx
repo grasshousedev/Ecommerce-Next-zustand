@@ -38,7 +38,6 @@ const Hero = ({heroImages}) => {
             
                 <div className={styles.cherryDiv}>
                     <span>More than faster</span>
-        
                     <Image src={Cherry} alt="" width={40} height={25}/>
 
                 </div>

@@ -16,12 +16,23 @@ import { useRouter } from "next/router"
 const Header = () => {
     
     const userMenuRef = useRef(null)
+    const mobileMenuRef = useRef(null)
+    const hamburgerRef = useRef(null)
     const [userMenu, setUserMenu]= useState(false)
+    const[mobileMenu, setMobileMenu] = useState(false)
+    console.log(mobileMenu)
+
+    const mobileNavigation= ()=>{
+         setMobileMenu(true)
+    }
     
     const handleClickOutside = (e) =>{
-        if( !userMenuRef.current.contains(e.target)){
+        if( !userMenuRef.current?.contains(e.target)){
             setUserMenu(false)
         }
+        // if(!mobileMenuRef.current?.contains(e.target) && !hamburgerRef.current?.contains(e.target)) {
+        //     setMobileMenu(false);
+        // }
     }
 
     useEffect(() =>{
@@ -33,21 +44,11 @@ const Header = () => {
 
 
     const router = useRouter()
-    let mobile;
-    let showHamburger;
-
-    if(typeof window !== 'undefined'){
-         mobile=  window.innerWidth <= 740 ? true : false
-         showHamburger= window.innerWidth <=890 ? true : false
-    }
-
     const [order, setOrder] = useState("")
     useEffect(() =>{
         
         setOrder(localStorage.getItem("order"))
     }, [])
-
-    
     const {currentUser, logout}= useAuth()
 
     const LogoutAndClose= async () =>{
@@ -64,25 +65,16 @@ const Header = () => {
     }
     
 
-    const[mobileMenu, setMobileMenu] = useState(false)
-
-   const mobileNavigation= ()=>{
-        setMobileMenu(true)
-   }
+   
 
     const items = useStore((state) => state.cart.dishes.length)
     const darkMode = useStore((state) => state.mode && state.mode.darkMode)
     const darkModeOn = useStore((state) => state.darkModeOn)
     const darkModeOff = useStore((state) => state.darkModeOff)
     const userInfo= useStore((state) => state.userInfo)
-    
 
-    
-    
     const [mobileUserMenu, setMobileUserMenu] = useState(false)
-
     const handleMobileUserMenu = () =>{
-        
         setMobileUserMenu((prevState) => !prevState)
     }
 
@@ -161,7 +153,7 @@ const Header = () => {
                     <UilMoon  className={ darkMode ? `${styles.active}` : undefined} onClick={handlerDarkMode}/>
                 </div> */}
                 
-                {(currentUser && !mobile) ?
+                {currentUser ?
                 <div className={styles.userMenu} onClick={handleUserMenu} ref={userMenuRef}>
                     <UilUser size={20}/>
                     <p className={styles.user}  >{userName}</p> 
@@ -193,6 +185,7 @@ const Header = () => {
                     <UserMenu
                     isOpen={userMenu}
                     setIsOpen={setUserMenu}
+                    className={styles.userMenu}
                     />
             
                 
@@ -215,21 +208,28 @@ const Header = () => {
                 )}
 
                 {/* MOBILE MENU */}
-                { (showHamburger && !mobileMenu) && <UilBars size={30} className={styles.hamburger} onClick={mobileNavigation}/> }
-                { (mobile && mobileMenu) &&  <UilTimes  size={30} onClick={() =>setMobileMenu(false)}/>}
+                {mobileMenu 
+                    ? <UilTimes  size={30} className={styles.cross} onClick={() =>setMobileMenu(false)}/>
+                    : <div ref={hamburgerRef} onClick={mobileNavigation} className={styles.hamburger}>
+                        <UilBars size={30}  />
+                     </div>
+                    
+                      
+                }
+                
 
-                {(mobile && mobileMenu) &&
-                <ul className={styles.mobileMenu}>
+                
+               {mobileMenu && (
+                <ul className={styles.mobileMenu} ref={mobileMenuRef}>
 
-                    {currentUser ?
-                    <div className={styles.mobileUserMenu}>
-                        <UilUser size={20}/>
-                        <p className={styles.user} onClick={handleMobileUserMenu} >{userName}</p> 
+                    {currentUser 
+                    ? <div className={styles.mobileUserMenu} onClick={handleMobileUserMenu}>
+                        <p className={styles.user}>{userName}</p> 
                         {mobileUserMenu ?   <UilAngleDown size={20} className={styles.rotatedIcon} /> :    <UilAngleDown size={20}  />}
 
-                    </div>:
+                    </div>
                     
-                    <div className={styles.authButtonMobile}> 
+                    :<div className={styles.authButtonMobile}> 
                         <Link href="/login">
                             <button className={` btn ${styles.login}`}>Login</button>
                     
@@ -242,8 +242,9 @@ const Header = () => {
                     </div>
                     } 
 
-                    {(currentUser &&  mobileUserMenu ) && 
-                    <div className={styles.mobileUserMenuItems}>
+                    { (currentUser && mobileUserMenu) && (
+
+                        <div className={styles.mobileUserMenuItems}>
                         <li>
                             <Link href='/account' onClick={ () => setUserMenu(false)}>Account</Link>
                         </li>
@@ -251,10 +252,10 @@ const Header = () => {
                         <li>
                             <p  onClick={LogoutAndClose}>Logout</p>
                         </li>
-                    </div>
-                      }
-
-                   
+                        </div>
+                    )
+                    
+                    }
                     
                     <li>
                     <Link href='../'>Home</Link>
@@ -271,7 +272,8 @@ const Header = () => {
                     <li>
                         <Link href='../#services'>Services</Link>
                     </li>
-                </ul>}
+            </ul>
+               )}
 
             </div>
         </div>

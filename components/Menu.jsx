@@ -2,7 +2,7 @@ import styles from "../styles/Menu.module.css"
 import Image from "next/image";
 import {urlFor} from "../lib/client"
 import Link from "next/link"
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import {UilAngleRight, UilMessage, UilWhatsapp } from "@iconscout/react-unicons"
 import chef from "../assets/chef.jpg"
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -13,12 +13,30 @@ import 'swiper/css/navigation';
 
 const Menu = ({food, foodCategories}) => {
     
-    let mobile
-
-    if(typeof window !== 'undefined'){
-        mobile= window.innerWidth <= 645 ? true : false
-    }
+    const [slidesPerView, setSlidesPerView] = useState(3);
+    const updateSlidesPerView = () => {
+        if (typeof window !== "undefined") {
+          if (window.innerWidth >= 1000) {
+            setSlidesPerView(3); 
+          } else if (window.innerWidth >= 800) {
+            setSlidesPerView(2.5); 
+          } else if (window.innerWidth >= 600) {
+            setSlidesPerView(2); 
+          } else{
+            setSlidesPerView(1.5);
+          }
+        }
+      };
     
+      useEffect(() => {
+        if(typeof window !== "undefined"){
+            window.addEventListener("resize", updateSlidesPerView);
+            return () => {
+            window.removeEventListener("resize", updateSlidesPerView);
+        }; 
+        }
+      }, []);
+      
     const[menuData, setMenuData]=useState(food)
     const[activeId, setActiveId] = useState(0)
 
@@ -54,7 +72,7 @@ const Menu = ({food, foodCategories}) => {
                 <div className={styles.menu}>
              
                  
-                    { !mobile && 
+                    { 
                         menuData.map((dish, id)=>{
                         const src = urlFor(dish.image).url()
                     
@@ -92,13 +110,13 @@ const Menu = ({food, foodCategories}) => {
                         )
                     })}
 
-                    {mobile && 
+                    
                     <Swiper
                     modules={[Navigation]}
                     navigation
                     speed={800}
                     spaceBetween={100}
-                    slidesPerView={1.5}
+                    slidesPerView={slidesPerView}
                     pagination={{ clickable: true }}
                     loop={true}
                     autoplay={{
@@ -136,7 +154,7 @@ const Menu = ({food, foodCategories}) => {
                                             <div className={styles.name}>
                                                 <span>{dish.name}</span>
                                             </div>
-                                            <span><span style={{color: "var(--themeRed)", fontSize: "1.2rem"}}> &#36</span>{dish.price[1]}</span>
+                                            <span><span style={{color: "var(--themeRed)", fontSize: "1.2rem"}}>USD </span>{dish.price[1]}</span>
                                         
                                             <Link href={`./food/${dish.slug.current}`}>
                                                 <div className={styles.order}>
@@ -153,7 +171,7 @@ const Menu = ({food, foodCategories}) => {
                                 )   
                                 })} 
 
-                    </Swiper> }
+                    </Swiper> 
 
 
                     
