@@ -1,18 +1,22 @@
-import {useAuth} from '../pages/Contexts/AuthContext'
-import { useRouter } from 'next/router'
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../pages/Contexts/AuthContext";
 
-const ProtectedRoute = ({children}) => {
-    const router = useRouter()
-    const{currentUser} = useAuth()
+const ProtectedRoute = ({ children }) => {
+  const router = useRouter();
+  const { isAuthenticated, checkAuthStatus } = useAuth();
 
-    if(!currentUser){
-        //storing the route the user was trying to access in the session storage then redirect him to the login page
-        sessionStorage.setItem('privateRoute', router.asPath);
-        router.push('/login')
-        return null
+  useEffect(() => {
+    checkAuthStatus(); // Check authentication status on component mount/update
+
+    if (!isAuthenticated) {
+      // Store the intended route in session storage
+      sessionStorage.setItem("intendedRoute", router.pathname);
+      router.push("/login");
     }
+  }, [isAuthenticated, router, checkAuthStatus]);
 
-    return children
-}
+  return <>{isAuthenticated ? children : null}</>;
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

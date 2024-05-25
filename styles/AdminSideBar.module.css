@@ -1,0 +1,41 @@
+.mainContainer {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 10rem;
+  padding: 1rem;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list > * {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  border-radius: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.list > *:hover {
+  cursor: pointer;
+  color: white;
+  background-color: var(--themeRed);
+}
+
+.list .selected {
+  color: white;
+  background-color: var(--themeRed);
+}

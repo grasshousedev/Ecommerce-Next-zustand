@@ -1,0 +1,137 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.mainContainer {
+  display: flex;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.formContainer {
+  margin-top: -15rem;
+  margin-left: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.formContainer > span:nth-child(1),
+.title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0 auto;
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.modalContainer > input,
+.updateSelect {
+  margin-top: 1rem;
+  outline: none;
+  padding: 0.8rem;
+  border: 2px solid rgb(213, 213, 213);
+  border-radius: 0.4rem;
+  width: 100%;
+}
+
+.modalContainer > button {
+  border: 0;
+  color: white;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  background: var(--themeRed);
+  width: 100%;
+}
+
+.formContainer > input,
+.formContainer > select {
+  width: 20%;
+  outline: none;
+  padding: 0.8rem;
+  border: 2px solid rgb(213, 213, 213);
+  border-radius: 0.4rem;
+}
+
+.formContainer > button {
+  padding: 0.9rem;
+  font-size: 1rem;
+  width: 20%;
+  border-radius: 0.5rem;
+  background: var(--themeRed);
+}
+
+.signUp {
+  color: var(--themeRed);
+}
+
+.signUp:hover {
+  cursor: pointer;
+}
+
+.formContainer > span:last-child {
+  margin-top: -1rem;
+}
+.formContainer > span:last-child::before {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 100%;
+  background-color: rgb(213, 213, 213);
+  margin: 1rem 0;
+}
+
+.formContainer > input,
+.formContainer > select {
+  width: 30%;
+}
+
+.formContainer > button {
+  width: 30%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table button {
+  margin-right: 5px;
+  padding: 0.4rem 1rem;
+  border-radius: 0.2rem;
+  border: 1px solid black;
+}
+
+.table button:hover {
+  cursor: pointer;
+}

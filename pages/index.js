@@ -1,16 +1,15 @@
 import Head from "next/head";
 import Layout from "../components/Layout";
 import Hero from "../components/Hero";
-import styles from "../styles/Home.module.css"
+import styles from "../styles/Home.module.css";
 import Services from "../components/Services";
-import { client } from "../lib/client"
 import Menu from "../components/Menu";
+import axios from "axios";
+import banner1 from "../assets/banner1.png";
+import banner2 from "../assets/banner2.png";
+import { url } from "../constants/constants";
 
-
-
-
-export default function Home({ food, heroImages, foodCategories}) {
-  
+export default function Home({ food, foodCategories }) {
   return (
     <Layout>
       <div className={styles.container}>
@@ -22,36 +21,36 @@ export default function Home({ food, heroImages, foodCategories}) {
 
         {/* body */}
         <main>
-          <Hero heroImages={heroImages} />
+          <Hero />
           <Services />
           <Menu food={food} foodCategories={foodCategories} />
         </main>
       </div>
     </Layout>
-
   );
 }
 
-
 export const getServerSideProps = async () => {
-  const foodQuery = '*[_type == "food"]'
-  const food = await client.fetch(foodQuery)
-  const heroImageQuery = '*[_type == "banner"]'
-  const heroImages = await client.fetch(heroImageQuery)
-  const foodCategoryQuery= '*[_type == "category"]'
-  const foodCategories = await client.fetch(foodCategoryQuery)
-  
-  
-  return {
-    props: {
-      food,
-      heroImages,
-      foodCategories,
-    }
+  try {
+    const foodResponse = await axios.get(`${url}/api/admin/products`);
+    const food = foodResponse.data;
+
+    const foodCategoryResponse = await axios.get(`${url}/api/admin/categories`);
+    const foodCategories = foodCategoryResponse.data;
+
+    return {
+      props: {
+        food,
+        foodCategories,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: {
+        food: [],
+        foodCategories: [],
+      },
+    };
   }
-
-}
-
-
-
-
+};

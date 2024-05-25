@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5rem;
+  padding: 1rem 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.logo > span {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.userMenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem;
+  background-color: rgb(243, 224, 224);
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.userMenu:hover {
+  cursor: pointer;
+}
+
+.userMenu > .rotatedIcon {
+  transform: rotate(180deg);
+}
+
+.userModal {
+  position: absolute;
+  top: -1rem;
+  right: -7rem;
+}
