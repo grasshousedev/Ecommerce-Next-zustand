@@ -14,11 +14,8 @@ import {
 import { useStore } from "../store/store";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
-import Cookies from "js-cookie";
 import UserMenu from "./UserMenu";
 import { useAuth } from "../pages/Contexts/AuthContext";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../lib/firebase";
 import { useRouter } from "next/router";
 
 const Header = () => {

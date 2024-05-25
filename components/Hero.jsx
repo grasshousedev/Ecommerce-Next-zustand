@@ -4,7 +4,7 @@ import Cherry from "../assets/Cherry.png";
 import { UilWhatsapp } from "@iconscout/react-unicons";
 import Pizza1 from "../assets/p1.jpg";
 import Link from "next/link";
-import { urlFor } from "../lib/client";
+
 import Carousel from "./Carousel";
 import { useState, useEffect } from "react";
 

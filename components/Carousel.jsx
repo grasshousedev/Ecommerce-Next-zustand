@@ -1,6 +1,5 @@
 import styles from "../styles/Carousel.module.css";
 import Image from "next/image";
-import { urlFor } from "../lib/client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/css";
