@@ -3,7 +3,7 @@ import styles from "../styles/AdminHeader.module.css";
 import Logo from "../assets/Logo.png";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
-import { useAuth } from "../pages/Contexts/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 import UserMenu from "./UserMenu";
 import {
   UilShoppingBag,

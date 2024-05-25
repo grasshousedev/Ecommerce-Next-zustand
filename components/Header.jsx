@@ -15,7 +15,7 @@ import { useStore } from "../store/store";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import UserMenu from "./UserMenu";
-import { useAuth } from "../pages/Contexts/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 import { useRouter } from "next/router";
 
 const Header = () => {

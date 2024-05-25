@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useStore } from "../store/store";
 import styles from "../styles/OrderModal.module.css";
 import { useRouter } from "next/router";
-import { useAuth } from "../pages/Contexts/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 import axios from "axios";
 import { url } from "../constants/constants";
 

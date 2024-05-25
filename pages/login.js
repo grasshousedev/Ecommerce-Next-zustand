@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import styles from "../styles/Login.module.css";
-import { useAuth } from "./Contexts/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 import axios from "axios";
 import { url } from "../constants/constants";
 
