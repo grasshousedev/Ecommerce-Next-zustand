@@ -2,7 +2,6 @@ import { useStore } from "../store/store";
 import Layout from "../components/Layout";
 import styles from "../styles/Cart.module.css";
 import Image from "next/image";
-import { urlFor } from "../lib/client";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import OrderModal from "../components/OrderModal";

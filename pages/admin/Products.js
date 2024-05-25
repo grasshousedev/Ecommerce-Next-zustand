@@ -3,7 +3,6 @@ import axios from "axios";
 import styles from "../../styles/Admin.module.css";
 import AdminHeader from "../../components/AdminHeader";
 import AdminSidebar from "../../components/AdminSidebar";
-import { Base64 } from "js-base64";
 import Image from "next/image";
 import { Modal } from "@mantine/core";
 import ProtectedRoute from "../../components/ProtectedRoute";

@@ -1,4 +1,3 @@
-import { client } from "../../lib/client";
 import Layout from "../../components/Layout";
 import styles from "../../styles/Order.module.css";
 import { UilBill, UilBox } from "@iconscout/react-unicons";
