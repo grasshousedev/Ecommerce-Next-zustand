@@ -43,7 +43,6 @@ export const getServerSideProps = async () => {
         food,
         foodCategories,
       },
-      revalidate: 60,
     };
   } catch (error) {
     console.error("Error fetching data:", error);
