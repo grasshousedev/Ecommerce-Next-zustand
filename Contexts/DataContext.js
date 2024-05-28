@@ -1,5 +1,3 @@
-// DataContext.js
-
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { url } from "../constants/constants";
@@ -10,7 +8,7 @@ export const DataProvider = ({ children }) => {
   const [food, setFood] = useState([]);
   const [foodCategories, setFoodCategories] = useState([]);
   const [order, setOrder] = useState(null);
-  const [orderLoading, setOrderLoading] = useState(true);
+  const [orderLoading, setOrderLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +22,6 @@ export const DataProvider = ({ children }) => {
         setFoodCategories(foodCategoryResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setOrderLoading(false);
       }
     };
 
