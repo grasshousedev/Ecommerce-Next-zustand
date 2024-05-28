@@ -94,12 +94,12 @@ const Menu = () => {
                     </div>
                     <div className={`${styles.details} skeleton-details`}>
                       <Skeleton
-                        width="70%"
+                        width={70}
                         height={20}
                         className="skeleton-text"
                       />
                       <Skeleton
-                        width="30%"
+                        width={30}
                         height={20}
                         className="skeleton-text"
                       />
@@ -178,12 +178,12 @@ const Menu = () => {
                       </div>
                       <div className={`${styles.details} skeleton-details`}>
                         <Skeleton
-                          width="70%"
+                          width={70}
                           height={20}
                           className="skeleton-text"
                         />
                         <Skeleton
-                          width="30%"
+                          width={30}
                           height={20}
                           className="skeleton-text"
                         />
