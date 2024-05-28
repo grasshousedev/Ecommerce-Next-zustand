@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useData } from "../../Contexts/DataContext";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Orders = () => {
   const { order, fetchOrder, orderLoading } = useData();
@@ -27,14 +29,6 @@ const Orders = () => {
     }
   }, [order]);
 
-  if (orderLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!order) {
-    return <div>Error loading order.</div>;
-  }
-
   return (
     <Layout>
       <div className={styles.container}>
@@ -43,22 +37,30 @@ const Orders = () => {
         <div className={styles.details}>
           <div>
             <span>Order ID </span>
-            <span>{order.trackingId}</span>
+            <span>
+              {orderLoading ? <Skeleton width={150} /> : order.trackingId}
+            </span>
           </div>
 
           <div>
             <span>Customer Name </span>
-            <span>{order.user.name}</span>
+            <span>
+              {orderLoading ? <Skeleton width={150} /> : order.user.name}
+            </span>
           </div>
 
           <div>
             <span>Method </span>
-            <span>{order.payment}</span>
+            <span>
+              {orderLoading ? <Skeleton width={100} /> : order.payment}
+            </span>
           </div>
 
           <div>
             <span>Total </span>
-            <span>${order.amount}</span>
+            <span>
+              {orderLoading ? <Skeleton width={50} /> : `$${order.amount}`}
+            </span>
           </div>
         </div>
 
@@ -66,7 +68,9 @@ const Orders = () => {
           <div className={styles.status}>
             <UilBill width={50} height={50} />
             <span>Payment </span>
-            {order.method === "on delivery" ? (
+            {orderLoading ? (
+              <Skeleton width={100} />
+            ) : order.method === "on delivery" ? (
               <span className={styles.pending}>On Delivery</span>
             ) : (
               <span className={styles.completed}>Completed</span>
@@ -76,13 +80,13 @@ const Orders = () => {
             <Image src={Cooking} alt="" width={50} height={50} />
             <span>Cooking</span>
 
-            {order.orderStatusValue === 1 && (
+            {orderLoading ? (
+              <Skeleton width={100} />
+            ) : order.orderStatusValue === 1 ? (
               <div className={styles.spinner}>
                 <Image src={Spinner} alt="" />
               </div>
-            )}
-
-            {order.orderStatusValue > 1 && (
+            ) : (
               <span className={styles.completed}>Completed</span>
             )}
           </div>
@@ -91,13 +95,13 @@ const Orders = () => {
             <Image src={Onway} alt="" width={50} height={50} />
             <span>OnWay</span>
 
-            {order.orderStatusValue === 2 && (
+            {orderLoading ? (
+              <Skeleton width={100} />
+            ) : order.orderStatusValue === 2 ? (
               <div className={styles.spinner}>
                 <Image src={Spinner} alt="" />
               </div>
-            )}
-
-            {order.orderStatusValue > 2 && (
+            ) : (
               <span className={styles.completed}>Completed</span>
             )}
           </div>
@@ -106,13 +110,13 @@ const Orders = () => {
             <UilBox width={50} height={50} />
             <span>Delivered</span>
 
-            {order.orderStatusValue === 3 && (
+            {orderLoading ? (
+              <Skeleton width={100} />
+            ) : order.orderStatusValue === 3 ? (
               <div className={styles.spinner}>
                 <Image src={Spinner} alt="" />
               </div>
-            )}
-
-            {order.orderStatusValue > 3 && (
+            ) : (
               <span className={styles.completed}>Completed</span>
             )}
           </div>
