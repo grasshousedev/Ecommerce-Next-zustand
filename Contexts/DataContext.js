@@ -8,6 +8,8 @@ export const DataProvider = ({ children }) => {
   const [food, setFood] = useState([]);
   const [foodCategories, setFoodCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [order, setOrder] = useState(null);
+  const [orderLoading, setOrderLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,8 +31,23 @@ export const DataProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  const fetchOrder = async (orderId) => {
+    setOrderLoading(true);
+    try {
+      const response = await axios.get(`${url}/api/customer/orders/${orderId}`);
+      setOrder(response.data);
+    } catch (error) {
+      console.error("Error fetching order:", error);
+      setOrder(null);
+    } finally {
+      setOrderLoading(false);
+    }
+  };
+
   return (
-    <DataContext.Provider value={{ food, foodCategories, loading }}>
+    <DataContext.Provider
+      value={{ food, foodCategories, loading, order, fetchOrder, orderLoading }}
+    >
       {children}
     </DataContext.Provider>
   );

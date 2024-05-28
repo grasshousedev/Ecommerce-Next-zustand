@@ -7,35 +7,33 @@ import Onway from "../../assets/onway.png";
 import Confirmed from "../../assets/confirmed.svg";
 import Image from "next/image";
 import { useEffect } from "react";
-import axios from "axios";
-import { url } from "../../constants/constants";
+import { useRouter } from "next/router";
+import { useData } from "../../Contexts/DataContext";
 
-export const getServerSideProps = async ({ params }) => {
-  const { id } = params;
+const Orders = () => {
+  const { order, fetchOrder, orderLoading } = useData();
+  const router = useRouter();
+  const { id } = router.query;
 
-  try {
-    const response = await axios.get(`${url}/api/customer/orders/${id}`); // Make HTTP GET request to fetch order details by ID
-    const order = response.data;
-
-    return {
-      props: {
-        order,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching order:", error);
-    return {
-      props: {
-        order: null,
-      },
-    };
-  }
-};
-
-const Orders = ({ order }) => {
   useEffect(() => {
-    order.status > 3 && localStorage.clear();
+    if (id) {
+      fetchOrder(id);
+    }
+  }, [id, fetchOrder]);
+
+  useEffect(() => {
+    if (order && order.status > 3) {
+      localStorage.clear();
+    }
   }, [order]);
+
+  if (orderLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!order) {
+    return <div>Error loading order.</div>;
+  }
 
   return (
     <Layout>
@@ -67,7 +65,6 @@ const Orders = ({ order }) => {
         <div className={styles.statusContainer}>
           <div className={styles.status}>
             <UilBill width={50} height={50} />
-
             <span>Payment </span>
             {order.method === "on delivery" ? (
               <span className={styles.pending}>On Delivery</span>
