@@ -1,6 +1,5 @@
 import styles from "../styles/Menu.module.css";
 import Image from "next/image";
-
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import {
@@ -8,16 +7,39 @@ import {
   UilMessage,
   UilWhatsapp,
 } from "@iconscout/react-unicons";
-import chef from "../assets/chef.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
+import axios from "axios";
+import { url } from "../constants/constants";
 
-const Menu = ({ food, foodCategories }) => {
-  //   console.log(food);
-  //   console.log(foodCategories);
+const Menu = () => {
+  const [food, setFood] = useState([]);
+  const [foodCategories, setFoodCategories] = useState([]);
+  const [menuData, setMenuData] = useState([]);
+  const [activeId, setActiveId] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(3);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const foodResponse = await axios.get(`${url}/api/admin/products`);
+        setFood(foodResponse.data);
+        setMenuData(foodResponse.data);
+
+        const foodCategoryResponse = await axios.get(
+          `${url}/api/admin/categories`
+        );
+        setFoodCategories(foodCategoryResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const updateSlidesPerView = () => {
     if (typeof window !== "undefined") {
       if (window.innerWidth >= 1000) {
@@ -41,13 +63,11 @@ const Menu = ({ food, foodCategories }) => {
     }
   }, []);
 
-  const [menuData, setMenuData] = useState(food);
-  const [activeId, setActiveId] = useState(0);
-
   const onClickHandler = (id, categoryId) => {
     filter(categoryId);
     setActiveId(id);
   };
+
   const filter = (categoryId) => {
     setMenuData(food.filter((item) => item.category.id == categoryId));
   };
@@ -60,67 +80,60 @@ const Menu = ({ food, foodCategories }) => {
         <span>Make you drool</span>
       </div>
 
-      {/* FOOD CATEGORIES AND MENU */}
       <div className={styles.products}>
         <ul className={styles.sidebar}>
-          {foodCategories.map((category, id) => {
-            return (
-              <li
-                key={id}
-                className={
-                  activeId == id
-                    ? `${styles.row} ${styles.active}`
-                    : `${styles.row}`
-                }
-                onClick={() => onClickHandler(id, category.id)}
-              >
-                <div className={styles.rowTitle}>{category.name}</div>
-              </li>
-            );
-          })}
+          {foodCategories.map((category, id) => (
+            <li
+              key={id}
+              className={
+                activeId == id
+                  ? `${styles.row} ${styles.active}`
+                  : `${styles.row}`
+              }
+              onClick={() => onClickHandler(id, category.id)}
+            >
+              <div className={styles.rowTitle}>{category.name}</div>
+            </li>
+          ))}
         </ul>
 
         <div className={styles.menu}>
-          {menuData.map((dish, id) => {
-            return (
-              <div key={id} className={styles.dish}>
-                <div className={styles.webMenu}>
+          {menuData.map((dish, id) => (
+            <div key={id} className={styles.dish}>
+              <div className={styles.webMenu}>
+                <Link href={`./food/${dish.id}`}>
+                  <div className={styles.imageWrapper}>
+                    <Image
+                      src={`data:image/jpeg;base64,${dish.image}`}
+                      alt=""
+                      objectFit="cover"
+                      layout="fill"
+                    />
+                  </div>
+                </Link>
+                <div className={styles.details}>
+                  <div className={styles.name}>
+                    <span>{dish.name}</span>
+                  </div>
+                  <span>
+                    <span
+                      style={{ color: "var(--themeRed)", fontSize: "1.2rem" }}
+                    >
+                      {" "}
+                      $
+                    </span>
+                    {dish.price[0]}
+                  </span>
                   <Link href={`./food/${dish.id}`}>
-                    <div className={styles.imageWrapper}>
-                      <Image
-                        src={`data:image/jpeg;base64,${dish.image}`}
-                        alt=""
-                        objectFit="cover"
-                        layout="fill"
-                        loading="lazy"
-                      />
+                    <div className={styles.order}>
+                      <div>Order Now</div>
+                      <UilAngleRight />
                     </div>
                   </Link>
-                  <div className={styles.details}>
-                    <div className={styles.name}>
-                      <span>{dish.name}</span>
-                    </div>
-                    <span>
-                      <span
-                        style={{ color: "var(--themeRed)", fontSize: "1.2rem" }}
-                      >
-                        {" "}
-                        $
-                      </span>
-                      {dish.price[0]}
-                    </span>
-
-                    <Link href={`./food/${dish.id}`}>
-                      <div className={styles.order}>
-                        <div>Order Now</div>
-                        <UilAngleRight />
-                      </div>
-                    </Link>
-                  </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
 
           <Swiper
             modules={[Navigation]}
@@ -137,49 +150,46 @@ const Menu = ({ food, foodCategories }) => {
             }}
             className={styles.mySwiper}
           >
-            {menuData.map((dish, id) => {
-              return (
-                <SwiperSlide key={id} className={styles.slide}>
-                  <div className={styles.webMenu}>
+            {menuData.map((dish, id) => (
+              <SwiperSlide key={id} className={styles.slide}>
+                <div className={styles.webMenu}>
+                  <Link href={`./food/${dish.id}`}>
+                    <div className={styles.imageWrapper}>
+                      <Image
+                        src={`data:image/jpeg;base64,${dish.image}`}
+                        alt=""
+                        objectFit="cover"
+                        layout="fill"
+                      />
+                    </div>
+                  </Link>
+
+                  <div className={styles.details}>
+                    <div className={styles.name}>
+                      <span>{dish.name}</span>
+                    </div>
+                    <span>
+                      <span
+                        style={{
+                          color: "var(--themeRed)",
+                          fontSize: "1.2rem",
+                        }}
+                      >
+                        USD{" "}
+                      </span>
+                      {dish.price[0]}
+                    </span>
+
                     <Link href={`./food/${dish.id}`}>
-                      <div className={styles.imageWrapper}>
-                        <Image
-                          src={`data:image/jpeg;base64,${dish.image}`}
-                          alt=""
-                          objectFit="cover"
-                          layout="fill"
-                          loading="lazy"
-                        />
+                      <div className={styles.order}>
+                        <div>Order Now</div>
+                        <UilAngleRight />
                       </div>
                     </Link>
-
-                    <div className={styles.details}>
-                      <div className={styles.name}>
-                        <span>{dish.name}</span>
-                      </div>
-                      <span>
-                        <span
-                          style={{
-                            color: "var(--themeRed)",
-                            fontSize: "1.2rem",
-                          }}
-                        >
-                          USD{" "}
-                        </span>
-                        {dish.price[0]}
-                      </span>
-
-                      <Link href={`./food/${dish.id}`}>
-                        <div className={styles.order}>
-                          <div>Order Now</div>
-                          <UilAngleRight />
-                        </div>
-                      </Link>
-                    </div>
                   </div>
-                </SwiperSlide>
-              );
-            })}
+                </div>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>
@@ -189,11 +199,6 @@ const Menu = ({ food, foodCategories }) => {
         <span>Question or feedback?</span>
         <span>We'd love to hear from you</span>
       </div>
-      {/* <div>
-                <input type="email" className={styles.email}  placeholder="Email Address" />
-                <UilMessage className={styles.message}/>
-               
-            </div> */}
 
       <Link href="https://api.whatsapp.com/send/?phone=243971534162">
         <a target="_blank" rel="noopener noreferrer">
@@ -201,7 +206,6 @@ const Menu = ({ food, foodCategories }) => {
             <div>
               <UilWhatsapp color="white" />
             </div>
-
             <span>Click to chat</span>
           </div>
         </a>
