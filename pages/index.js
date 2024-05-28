@@ -5,8 +5,6 @@ import styles from "../styles/Home.module.css";
 import Services from "../components/Services";
 import Menu from "../components/Menu";
 import axios from "axios";
-import banner1 from "../assets/banner1.png";
-import banner2 from "../assets/banner2.png";
 import { url } from "../constants/constants";
 
 export default function Home({ food, foodCategories }) {

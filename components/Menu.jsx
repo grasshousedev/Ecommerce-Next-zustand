@@ -92,6 +92,7 @@ const Menu = ({ food, foodCategories }) => {
                         alt=""
                         objectFit="cover"
                         layout="fill"
+                        loading="lazy"
                       />
                     </div>
                   </Link>
@@ -147,6 +148,7 @@ const Menu = ({ food, foodCategories }) => {
                           alt=""
                           objectFit="cover"
                           layout="fill"
+                          loading="lazy"
                         />
                       </div>
                     </Link>

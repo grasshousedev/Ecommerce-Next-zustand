@@ -41,17 +41,27 @@ const Products = () => {
   };
 
   const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`${url}/api/admin/products`);
-      setProducts(response.data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
+    let retries = 3;
+    while (retries > 0) {
+      try {
+        const response = await axios.get(`${url}/api/admin/products`, {
+          timeout: 10000,
+        });
+        setProducts(response.data);
+        return;
+      } catch (error) {
+        if (retries <= 1) {
+          console.error("Error fetching products:", error);
+          return;
+        }
+        retries -= 1;
+        console.warn(`Retrying fetchProducts, attempts left: ${retries}`);
+      }
     }
   };
 
   const createProduct = async (e) => {
     e.preventDefault();
-
     try {
       const formDataToSend = {
         name: name,
@@ -60,11 +70,8 @@ const Products = () => {
         category: { id: parseInt(category) },
         image: image,
       };
-
       await axios.post(`${url}/api/admin/product`, formDataToSend);
-
       toast.success("Product created");
-
       fetchProducts();
     } catch (error) {
       console.error("Error:", error);
@@ -129,7 +136,6 @@ const Products = () => {
 
   const updateProduct = async () => {
     if (!selectedProduct) return;
-
     try {
       const formDataToSend = {
         name: name,
@@ -138,12 +144,10 @@ const Products = () => {
         category: { id: parseInt(category) },
         image: image,
       };
-
       await axios.put(
         `${url}/api/admin/product/${selectedProduct.id}`,
         formDataToSend
       );
-
       fetchProducts();
       setIsModalOpen(false);
     } catch (error) {
@@ -233,33 +237,34 @@ const Products = () => {
                   <th>Product Category</th>
                   <th>Product Description</th>
                   <th>Product Image</th>
-                  <th>Actions</th>
+                  <th>Delete Product</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((product) => (
-                  <tr key={product.id}>
-                    {/* Display product details */}
+                  <tr key={product.id} onClick={() => handleRowClick(product)}>
                     <td>{product.name}</td>
-                    <td>{product.price.join(", ")}</td>
+                    <td>
+                      {product.price[0]}, {product.price[1]}, {product.price[2]}
+                    </td>
                     <td>{product.category.name}</td>
                     <td>{product.description}</td>
                     <td>
                       <Image
-                        src={`data:image/jpeg;base64,${product.image}`}
-                        alt="product-image"
-                        loading="lazy"
-                        height={60}
-                        width={120}
+                        src={`data:image/png;base64,${product.image}`}
+                        width={50}
+                        height={50}
+                        alt="product image"
                       />
                     </td>
-                    <td className={styles.buttons}>
-                      {/* Button to update product */}
-                      <button onClick={() => handleRowClick(product)}>
-                        Update
-                      </button>
-                      {/* Button to delete product */}
-                      <button onClick={() => deleteProduct(product.id)}>
+                    <td>
+                      <button
+                        className="btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteProduct(product.id);
+                        }}
+                      >
                         Delete
                       </button>
                     </td>
@@ -267,84 +272,77 @@ const Products = () => {
                 ))}
               </tbody>
             </table>
-            {/* Render modal for updating product */}
-            <Modal
-              opened={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              title="Update Product"
-              overlayColor="#000"
-            >
-              <div className={styles.modalContainer}>
-                <input
-                  type="text"
-                  name="name"
-                  value={name}
-                  placeholder="Product Name"
-                  onChange={handleInputChange}
-                  required
-                />
-
-                {/* Render input fields for small, medium, and large prices */}
-                <input
-                  type="number"
-                  value={prices[0]} // Small price
-                  placeholder="Small Price"
-                  onChange={(e) => handlePriceChange(0, e.target.value)}
-                  required
-                />
-                <input
-                  type="number"
-                  value={prices[1]} // Medium price
-                  placeholder="Medium Price"
-                  onChange={(e) => handlePriceChange(1, e.target.value)}
-                  required
-                />
-                <input
-                  type="number"
-                  value={prices[2]} // Large price
-                  placeholder="Large Price"
-                  onChange={(e) => handlePriceChange(2, e.target.value)}
-                  required
-                />
-
-                <select
-                  className={styles.updateSelect}
-                  name="category"
-                  value={category}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Select Category</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-
-                <input
-                  type="text"
-                  name="description"
-                  value={description}
-                  placeholder="Product Description"
-                  onChange={handleInputChange}
-                  required
-                />
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  required
-                />
-
-                <button onClick={updateProduct}>Update</button>
-              </div>
-            </Modal>
+            <Toaster position="bottom-center" reverseOrder={false} />
           </main>
         </div>
+        <Modal
+          opened={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Update Product"
+        >
+          <form className={styles.formContainer}>
+            <input
+              type="text"
+              name="name"
+              value={name}
+              placeholder="Product Name"
+              onChange={handleInputChange}
+              required
+            />
+
+            <input
+              type="number"
+              value={prices[0]} // Small price
+              placeholder="Small Price"
+              onChange={(e) => handlePriceChange(0, e.target.value)}
+              required
+            />
+            <input
+              type="number"
+              value={prices[1]} // Medium price
+              placeholder="Medium Price"
+              onChange={(e) => handlePriceChange(1, e.target.value)}
+              required
+            />
+            <input
+              type="number"
+              value={prices[2]} // Large price
+              placeholder="Large Price"
+              onChange={(e) => handlePriceChange(2, e.target.value)}
+              required
+            />
+
+            <select
+              name="category"
+              value={category}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Select Category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              name="description"
+              value={description}
+              placeholder="Product Description"
+              onChange={handleInputChange}
+              required
+            />
+
+            <input type="file" accept="image/*" onChange={handleImageUpload} />
+
+            <button type="button" className="btn" onClick={updateProduct}>
+              Update
+            </button>
+          </form>
+        </Modal>
       </div>
-      <Toaster />
     </ProtectedRoute>
   );
 };
